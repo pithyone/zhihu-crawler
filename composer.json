@@ -1,0 +1,22 @@
+{
+    "name": "pithyone/zhihu-crawler",
+    "type": "library",
+    "description": "知乎爬虫",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "wangbing",
+            "email": "pithyone@vip.qq.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "jaeger/querylist": "^3.2",
+        "monolog/monolog": "^1.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "pithyone\\zhihu\\crawler\\": "src/"
+        }
+    }
+}
