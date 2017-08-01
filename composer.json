@@ -1,7 +1,7 @@
 {
     "name": "pithyone/zhihu-crawler",
     "type": "library",
-    "description": "知乎爬虫",
+    "description": "轻量级知乎爬虫",
     "license": "MIT",
     "authors": [
         {
@@ -12,7 +12,8 @@
     "require": {
         "guzzlehttp/guzzle": "^6.3",
         "jaeger/querylist": "^3.2",
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.23",
+        "voku/arrayy": "^3.6"
     },
     "autoload": {
         "psr-4": {

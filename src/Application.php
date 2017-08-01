@@ -3,6 +3,8 @@
 namespace pithyone\zhihu\crawler;
 
 
+use Arrayy\Arrayy;
+use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -31,11 +33,9 @@ class Application
     ];
 
     /**
-     * @var array
+     * @var Arrayy
      */
-    protected $config = [
-        'debug' => true
-    ];
+    protected $config;
 
     /**
      * Application constructor.
@@ -44,8 +44,7 @@ class Application
      */
     public function __construct($config = [])
     {
-        $this->config = array_merge($this->config, $config);
-
+        $this->config = new Arrayy($config);
         $this->initializeLogger();
     }
 
@@ -56,9 +55,11 @@ class Application
     {
         $logger = new Logger('ZhihuCrawler');
 
-        if (!$this->config['debug']) {
+        if (!$this->config->get('debug')) {
             $handler = new NullHandler();
-        } elseif ($logFile = $this->config['log']['file']) {
+        } elseif ($this->config->get('log.handler') && $this->config->get('log.handler') instanceof AbstractProcessingHandler) {
+            $handler = $this->config->get('log.handler');
+        } elseif ($logFile = $this->config->get('log.file')) {
             $handler = new StreamHandler($logFile);
         } else {
             $handler = new NullHandler();
