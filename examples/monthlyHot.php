@@ -10,18 +10,20 @@ spl_autoload_register(function ($c) {
 set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__DIR__) . '/src');
 
 $config = [
-    'debug' => true,                        // Debug 模式，当值为 true 时，记录请求、解析日志
+    /**
+     * Debug 模式，当值为 true 时，记录请求、解析日志
+     */
+    'debug' => true,
+
+    /**
+     * 日志文件存储位置
+     */
     'log'   => [
-        'file' => './tmp/zhihu-crawler.log' // 日志文件位置，要求绝对路径
+        'file' => __DIR__ . '/../tmp/zhihu-crawler.log'
     ],
 ];
 
 $app = new Application($config);
-
 $monthlyHot = $app->monthlyHot;
 
 $monthlyHot->lists();
-
-// $monthlyHot->lists(function ($data) {
-//     return $data['title'];
-// });
