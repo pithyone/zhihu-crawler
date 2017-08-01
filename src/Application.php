@@ -84,7 +84,10 @@ class Application
         if (isset($this->classes[$name])) {
             $class = $this->classes[$name];
 
-            return new $class(new Query(), new Http());
+            $http = new Http();
+            $http->setBaseUri('https://www.zhihu.com');
+
+            return new $class(new Query(), $http);
         } else {
             throw new RuntimeException("Identifier '{$name}' is not defined.");
         }

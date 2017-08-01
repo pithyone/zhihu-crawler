@@ -16,6 +16,11 @@ use GuzzleHttp\Psr7\Response as Psr7Response;
 class Http
 {
     /**
+     * @var string
+     */
+    protected $baseUri;
+
+    /**
      * @var array
      */
     protected $middlewares = [];
@@ -31,6 +36,19 @@ class Http
             Middleware::log(Log::getLogger(), new MessageFormatter()),
             Middleware::retry($this->decider())
         );
+    }
+
+    /**
+     * @param string $baseUri
+     *
+     * @return $this
+     * @author wangbing <pithyone@vip.qq.com>
+     */
+    public function setBaseUri($baseUri)
+    {
+        $this->baseUri = $baseUri;
+
+        return $this;
     }
 
     /**
@@ -89,7 +107,7 @@ class Http
     public function request($url, $method = 'GET', $options = [])
     {
         $client = new Client([
-            'base_uri' => 'https://www.zhihu.com',
+            'base_uri' => $this->baseUri,
             'timeout'  => 5.0
         ]);
 
