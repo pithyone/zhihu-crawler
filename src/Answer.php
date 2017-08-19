@@ -2,7 +2,6 @@
 
 namespace pithyone\zhihu\crawler;
 
-
 class Answer extends Base
 {
     /**
@@ -21,6 +20,7 @@ class Answer extends Base
      * @param string $id
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function id($id)
@@ -34,6 +34,7 @@ class Answer extends Base
      * @param int $page
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function page($page)
@@ -47,6 +48,7 @@ class Answer extends Base
      * @param callable $callback
      *
      * @return array
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function lists($callback = null)
@@ -56,13 +58,13 @@ class Answer extends Base
         $ret = [];
         for ($page = 1; $page <= $max_page; $page++) {
             $params = [
-                "url_token" => $this->id,
-                "pagesize"  => 10,
-                "offset"    => ($page - 1) * 10
+                'url_token' => $this->id,
+                'pagesize'  => 10,
+                'offset'    => ($page - 1) * 10,
             ];
             $options = [
                 'method' => 'next',
-                'params' => json_encode($params)
+                'params' => json_encode($params),
             ];
 
             $body = $this->http->response('POST', ['/node/QuestionAnswerListV2', $options]);
@@ -84,15 +86,15 @@ class Answer extends Base
                     'comment'     => [
                         'a[name="addcomment"]', 'text', '', function ($text) {
                             return intval($text);
-                        }
+                        },
                     ],
                     'summary'     => [
                         'div[class^="zm-editable-content"]', 'text', '', function ($text) {
                             $text = str_replace(PHP_EOL, '', $text);
 
                             return trim(mb_substr($text, 0, 350, 'utf-8'));
-                        }
-                    ]
+                        },
+                    ],
                 ])
                 ->range('div[tabindex="-1"]')
                 ->callback(function (&$data) use ($callback) {
@@ -118,6 +120,7 @@ class Answer extends Base
      * @param $body
      *
      * @return bool|string
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     private function getContents($body)

@@ -2,13 +2,13 @@
 
 namespace pithyone\zhihu\crawler;
 
-
 class MonthlyHot extends Base
 {
     /**
      * @param callable $callback
      *
      * @return mixed
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function lists($callback = null)
@@ -29,8 +29,8 @@ class MonthlyHot extends Base
                 'comment'     => [
                     'a[name="addcomment"]', 'text', '', function ($text) {
                         return intval($text);
-                    }
-                ]
+                    },
+                ],
             ])
             ->range('div[data-type="monthly"] div[class^="explore-feed"]')
             ->callback($callback)

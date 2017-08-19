@@ -2,16 +2,15 @@
 
 namespace pithyone\zhihu\crawler;
 
-
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
-use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use GuzzleHttp\Psr7\Response as Psr7Response;
+use Psr\Http\Message\ResponseInterface;
 
 class Http
 {
@@ -42,6 +41,7 @@ class Http
      * @param string $baseUri
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function setBaseUri($baseUri)
@@ -56,6 +56,7 @@ class Http
      * @param array  $query
      *
      * @return mixed|ResponseInterface
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function get($url, array $query = [])
@@ -68,6 +69,7 @@ class Http
      * @param array  $options
      *
      * @return mixed|ResponseInterface
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function post($url, array $options = [])
@@ -82,6 +84,7 @@ class Http
      * @param array  $param_arr
      *
      * @return mixed|\Psr\Http\Message\StreamInterface
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function response($method, $param_arr = [])
@@ -102,13 +105,14 @@ class Http
      * @param array  $options
      *
      * @return mixed|\Psr\Http\Message\ResponseInterface
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function request($url, $method = 'GET', $options = [])
     {
         $client = new Client([
             'base_uri' => $this->baseUri,
-            'timeout'  => 5.0
+            'timeout'  => 5.0,
         ]);
 
         $method = strtoupper($method);
@@ -120,6 +124,7 @@ class Http
 
     /**
      * @return HandlerStack
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     protected function getHandler()
@@ -135,6 +140,7 @@ class Http
 
     /**
      * @return \Closure
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     private function decider()
@@ -159,7 +165,7 @@ class Http
                 $request->getUri(),
                 $retries + 1,
                 self::MAX_RETRIES,
-                $response ? 'status code: ' . $response->getStatusCode() : $exception->getMessage()
+                $response ? 'status code: '.$response->getStatusCode() : $exception->getMessage()
             ), [$request->getHeader('Host')[0]]);
 
             return true;
@@ -170,6 +176,7 @@ class Http
      * @param Psr7Response|null $response
      *
      * @return bool
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     private function isServerError(Psr7Response $response = null)
@@ -181,6 +188,7 @@ class Http
      * @param RequestException|null $exception
      *
      * @return bool
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     private function isConnectError(RequestException $exception = null)
