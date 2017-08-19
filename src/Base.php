@@ -2,7 +2,6 @@
 
 namespace pithyone\zhihu\crawler;
 
-
 abstract class Base
 {
     /**

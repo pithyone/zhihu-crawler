@@ -2,7 +2,6 @@
 
 namespace pithyone\zhihu\crawler;
 
-
 class Question extends Base
 {
     /**
@@ -14,6 +13,7 @@ class Question extends Base
      * @param string $id
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function id($id)
@@ -25,6 +25,7 @@ class Question extends Base
 
     /**
      * @return mixed
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function get()

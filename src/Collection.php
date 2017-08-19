@@ -2,7 +2,6 @@
 
 namespace pithyone\zhihu\crawler;
 
-
 class Collection extends Base
 {
     /**
@@ -19,6 +18,7 @@ class Collection extends Base
      * @param string $id
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function id($id)
@@ -32,6 +32,7 @@ class Collection extends Base
      * @param int $page
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function page($page)
@@ -45,6 +46,7 @@ class Collection extends Base
      * @param callable $callback
      *
      * @return array
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function lists($callback = null)
@@ -67,8 +69,8 @@ class Collection extends Base
                     'comment'     => [
                         'a[name="addcomment"]', 'text', '', function ($text) {
                             return intval($text);
-                        }
-                    ]
+                        },
+                    ],
                 ])
                 ->range('div[class="zu-main-content"] div[class="zm-item"]')
                 ->callback($callback)

@@ -2,7 +2,6 @@
 
 namespace pithyone\zhihu\crawler;
 
-
 use Arrayy\Arrayy;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Handler\NullHandler;
@@ -11,14 +10,12 @@ use Monolog\Logger;
 use QL\QueryList;
 
 /**
- * Class Application
+ * Class Application.
  *
  * @property \pithyone\zhihu\crawler\Answer     $answer
  * @property \pithyone\zhihu\crawler\Collection $collection
  * @property \pithyone\zhihu\crawler\MonthlyHot $monthlyHot
  * @property \pithyone\zhihu\crawler\Question   $question
- *
- * @package pithyone\shouqu
  */
 class Application
 {
@@ -75,8 +72,10 @@ class Application
     /**
      * @param string $name
      *
-     * @return mixed
      * @throws RuntimeException
+     *
+     * @return mixed
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function __get($name)

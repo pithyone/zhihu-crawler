@@ -2,7 +2,6 @@
 
 namespace pithyone\zhihu\crawler;
 
-
 use QL\QueryList;
 
 class Query
@@ -36,6 +35,7 @@ class Query
      * @param string $page
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function page($page)
@@ -49,6 +49,7 @@ class Query
      * @param array $rules
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function rules($rules)
@@ -62,6 +63,7 @@ class Query
      * @param string $range
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function range($range)
@@ -75,6 +77,7 @@ class Query
      * @param string $outputEncoding
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function outputEncoding($outputEncoding)
@@ -88,6 +91,7 @@ class Query
      * @param callable $callback
      *
      * @return $this
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function callback($callback)
@@ -99,6 +103,7 @@ class Query
 
     /**
      * @return mixed
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public function getData()

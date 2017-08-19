@@ -2,7 +2,6 @@
 
 namespace pithyone\zhihu\crawler;
 
-
 use QL\QueryList;
 
 class Image
@@ -11,6 +10,7 @@ class Image
      * @param $page
      *
      * @return mixed
+     *
      * @author wangbing <pithyone@vip.qq.com>
      */
     public static function lists($page)
