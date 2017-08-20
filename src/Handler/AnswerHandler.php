@@ -38,7 +38,7 @@ class AnswerHandler extends AbstractHandler
      *
      * @param Client $client
      * @param string $questionId
-     * @param int $page
+     * @param int    $page
      */
     public function __construct(Client $client, $questionId, $page)
     {
@@ -52,8 +52,8 @@ class AnswerHandler extends AbstractHandler
      */
     protected function page()
     {
-        $offset   = ($this->page - 1) * 10;
-        $data     = [
+        $offset = ($this->page - 1) * 10;
+        $data = [
             'method' => 'next',
             'params' => json_encode([
                 'url_token' => $this->questionId,
@@ -62,7 +62,8 @@ class AnswerHandler extends AbstractHandler
             ]),
         ];
         $response = $this->client->post('/node/QuestionAnswerListV2', ['form_params' => $data]);
-        $array    = \GuzzleHttp\json_decode((string)$response->getBody(), true);
+        $array = \GuzzleHttp\json_decode((string) $response->getBody(), true);
+
         return A::create($array)->get('msg')->implode();
     }
 
@@ -92,7 +93,7 @@ class AnswerHandler extends AbstractHandler
                 'text',
                 '',
                 function ($text) {
-                    return (string)S::create($text)->substr(0, 350)->collapseWhitespace();
+                    return (string) S::create($text)->substr(0, 350)->collapseWhitespace();
                 },
             ],
         ];
@@ -113,11 +114,12 @@ class AnswerHandler extends AbstractHandler
     {
         return QueryList::Query($this->page(), $this->rules(), $this->range())->getData(
             function ($item) use ($callback) {
-                $handler        = new ImageHandler($item['images']);
-                $images         = $handler->pick(function ($data) {
+                $handler = new ImageHandler($item['images']);
+                $images = $handler->pick(function ($data) {
                     return $data['image'];
                 });
                 $item['images'] = A::create($images)->stripEmpty()->values()->toArray();
+
                 return is_callable($callback) ? call_user_func($callback, $item) : $item;
             }
         );

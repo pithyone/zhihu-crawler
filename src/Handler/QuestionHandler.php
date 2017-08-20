@@ -43,7 +43,8 @@ class QuestionHandler extends AbstractHandler
     protected function page()
     {
         $response = $this->client->get("/question/{$this->questionId}");
-        return (string)$response->getBody();
+
+        return (string) $response->getBody();
     }
 
     /**

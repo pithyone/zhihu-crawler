@@ -5,7 +5,6 @@
  * @author  wangbing <pithyone@vip.qq.com>
  * @date    2017/8/19
  */
-
 require __DIR__.'/../vendor/autoload.php';
 
 use GuzzleHttp\Client;

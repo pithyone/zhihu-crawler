@@ -16,24 +16,27 @@ use QL\QueryList;
 abstract class AbstractHandler
 {
     /**
-     * 要抓取的网页URL地址或者html源代码
+     * 要抓取的网页URL地址或�
+     * html源代码
      *
      * @return string
      */
     abstract protected function page();
 
     /**
-     * 采集规则
+     * 采集规则.
      *
      * @link https://doc.querylist.cc/site/index/doc/30
+     *
      * @return array
      */
     abstract protected function rules();
 
     /**
-     * 区域选择器
+     * 区域选择器.
      *
      * @link http://doc.querylist.cc/site/index/doc/29
+     *
      * @return string
      */
     protected function range()
@@ -42,9 +45,10 @@ abstract class AbstractHandler
     }
 
     /**
-     * 采集
+     * 采集.
      *
      * @param callback $callback
+     *
      * @return array
      */
     public function pick($callback = null)

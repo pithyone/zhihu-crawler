@@ -44,7 +44,7 @@ class ZhLite
     }
 
     /**
-     * 初始化日志
+     * 初始化日志.
      */
     private function initializeLogger()
     {
@@ -65,10 +65,10 @@ class ZhLite
         $this->handler = $handler;
     }
 
-
     /**
      * @param string $name
-     * @param array $arguments
+     * @param array  $arguments
+     *
      * @return mixed
      */
     public function __call($name, $arguments)

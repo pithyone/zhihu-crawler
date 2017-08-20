@@ -51,7 +51,8 @@ class CollectionHandler extends AbstractHandler
     protected function page()
     {
         $response = $this->client->get("/collection/{$this->collectionId}", ['query' => "page={$this->page}"]);
-        return (string)$response->getBody();
+
+        return (string) $response->getBody();
     }
 
     /**
@@ -72,7 +73,7 @@ class CollectionHandler extends AbstractHandler
                 'text',
                 '-a',
                 function ($text) {
-                    return (string)S::create($text)->collapseWhitespace();
+                    return (string) S::create($text)->collapseWhitespace();
                 },
             ],
             'comment'     => [

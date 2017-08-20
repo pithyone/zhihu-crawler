@@ -37,7 +37,8 @@ class MonthlyHotHandler extends AbstractHandler
     protected function page()
     {
         $response = $this->client->get('/explore#monthly-hot');
-        return (string)$response->getBody();
+
+        return (string) $response->getBody();
     }
 
     /**
@@ -58,7 +59,7 @@ class MonthlyHotHandler extends AbstractHandler
                 'text',
                 '-a',
                 function ($text) {
-                    return (string)S::create($text)->collapseWhitespace();
+                    return (string) S::create($text)->collapseWhitespace();
                 },
             ],
             'comment'     => [
