@@ -1,33 +1,67 @@
 # zhihu-crawler
 
+[![StyleCI](https://styleci.io/repos/98495729/shield?branch=master)](https://styleci.io/repos/98495729)
+[![Latest Stable Version](https://poser.pugx.org/pithyone/zhihu-crawler/v/stable)](https://packagist.org/packages/pithyone/zhihu-crawler)
+[![Total Downloads](https://poser.pugx.org/pithyone/zhihu-crawler/downloads)](https://packagist.org/packages/pithyone/zhihu-crawler)
+[![Latest Unstable Version](https://poser.pugx.org/pithyone/zhihu-crawler/v/unstable)](https://packagist.org/packages/pithyone/zhihu-crawler)
+[![License](https://poser.pugx.org/pithyone/zhihu-crawler/license)](https://packagist.org/packages/pithyone/zhihu-crawler)
+
 🕷 轻量级知乎爬虫
 
-## 特性
+## Feature
 
-- 简单易操作，不用管理 Cookie
-- 自定义设置输出对象属性，例如只输出答案中全部图片（用途你懂的）
-- 记录请求、解析日志，方便 Debug
+- 简单易操作，不用关心 `Cookie`
+- 自定义输出对象属性，:smirk: 输出回答中所有图片
+- 记录爬虫日志
 
-## 安装
+## Installation
 
 ```shell
 $ composer require pithyone/zhihu-crawler
 ```
 
-## 用法
+## Basic Usage
 
-可直接参考 [demo](examples)
+```php
+<?php
 
-> 建议使用命令行运行脚本，因为过程比较耗时
+use GuzzleHttp\Client;
+use pithyone\zhihu\crawler\Handler\AnswerHandler;
+use pithyone\zhihu\crawler\ZhLite;
 
-- [初始化](docs/initialize.md)
-- [问题](docs/question.md)
-- [回答](docs/answer.md)
-- [收藏夹](docs/collection.md)
+$config = [
+    'debug' => true,
+    'log'   => [
+        'file' => __DIR__.'/tmp/crawler.log', // 日志存储位置
+    ],
+];
 
-## 常见问题
+$client = new Client([
+    'base_uri' => 'https://www.zhihu.com',
+    'timeout'  => 5.0,
+]);
 
-- 如果日志中出现 `Get data failed` 类似信息，不一定代表抓取失败，还有一种可能就是被抓取属性值为空。
+$zhLite = new ZhLite($config);
+$zhLite->setHandler(new AnswerHandler($client, 58481349, 1));
+$zhLite->pick(function ($item) {
+    // 存储操作，保存到数据库...
+    // return $item['images']; // 输出回答中所有图片
+});
+```
+
+## Documentation
+
+- [Usage Instructions](/docs/index.md)
+
+## Links
+
+- [知乎热门钓鱼贴图片版](http://zhihu.pithyone.tk/)
+- [热门收藏 - 知乎](http://pithyone.tk/feed/zhihu/collection)
+- [本月最热 - 知乎](http://pithyone.tk/feed/zhihu/month)
+
+## FAQ
+
+- 如果日志中出现 `Get data failed`，不一定代表抓取失败，还有可能是被抓取属性值为空。
 
 ## License
 
