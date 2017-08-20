@@ -16,8 +16,7 @@ use QL\QueryList;
 abstract class AbstractHandler
 {
     /**
-     * 要抓取的网页URL地址或�
-     * html源代码
+     * 要抓取的网页URL地址或网页源代码
      *
      * @return string
      */

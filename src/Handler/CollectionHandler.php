@@ -35,8 +35,8 @@ class CollectionHandler extends AbstractHandler
      * CollectionHandler constructor.
      *
      * @param Client $client
-     * @param $collectionId
-     * @param $page
+     * @param string $collectionId
+     * @param int    $page
      */
     public function __construct(Client $client, $collectionId, $page)
     {
