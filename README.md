@@ -1,13 +1,12 @@
 # zhihu-crawler
 
-[![StyleCI](https://styleci.io/repos/98495729/shield?style=plastic)](https://styleci.io/repos/98495729)
+[![StyleCI](https://styleci.io/repos/98495729/shield?branch=master&style=flat)](https://styleci.io/repos/98495729)
 [![Latest Stable Version](https://poser.pugx.org/pithyone/zhihu-crawler/v/stable)](https://packagist.org/packages/pithyone/zhihu-crawler)
 [![Latest Unstable Version](https://poser.pugx.org/pithyone/zhihu-crawler/v/unstable)](https://packagist.org/packages/pithyone/zhihu-crawler)
+[![Build Status](https://travis-ci.org/pithyone/zhihu-crawler.svg?branch=master)](https://travis-ci.org/pithyone/zhihu-crawler)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/?branch=master)
 [![License](https://poser.pugx.org/pithyone/zhihu-crawler/license)](https://packagist.org/packages/pithyone/zhihu-crawler)
-[![Build Status](https://travis-ci.org/pithyone/zhihu-crawler.svg)](https://travis-ci.org/pithyone/zhihu-crawler)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/badges/quality-score.png)](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler)
-[![Code Coverage](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/badges/coverage.png)](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler)
-[![Build Status](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/badges/build.png)](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/build-status)
 
 🕷 轻量级知乎爬虫
 
