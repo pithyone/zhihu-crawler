@@ -21,7 +21,7 @@ namespace pithyone\zhihu\crawler\Selector;
 class QuestionSelector extends AbstractSelector
 {
     /**
-     * 标题
+     * 标题.
      *
      * @return string
      */
@@ -31,7 +31,7 @@ class QuestionSelector extends AbstractSelector
     }
 
     /**
-     * 描述
+     * 描述.
      *
      * @return string
      */
@@ -41,7 +41,7 @@ class QuestionSelector extends AbstractSelector
     }
 
     /**
-     * 评论
+     * 评论.
      *
      * @return string
      */
@@ -51,7 +51,7 @@ class QuestionSelector extends AbstractSelector
     }
 
     /**
-     * 关注者
+     * 关注者.
      *
      * @return int
      */
@@ -61,7 +61,7 @@ class QuestionSelector extends AbstractSelector
     }
 
     /**
-     * 被浏览
+     * 被浏览.
      *
      * @return int
      */
@@ -71,7 +71,7 @@ class QuestionSelector extends AbstractSelector
     }
 
     /**
-     * 回答
+     * 回答.
      *
      * @return int
      */

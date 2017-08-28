@@ -21,7 +21,7 @@ class MonthlyHotHandler extends AbstractHandler
      */
     public function pick($callback = null)
     {
-        $crawler = $this->client->request('GET', self::BASE_URI."/explore#monthly-hot");
+        $crawler = $this->client->request('GET', self::BASE_URI.'/explore#monthly-hot');
 
         return $crawler
             ->filter('div[data-type="monthly"] div[class^="explore-feed"]')

@@ -25,7 +25,7 @@ use Symfony\Component\DomCrawler\Crawler;
 class AnswerSelector extends ListSelector
 {
     /**
-     * 头像
+     * 头像.
      *
      * @return null|string
      */
@@ -43,7 +43,7 @@ class AnswerSelector extends ListSelector
     }
 
     /**
-     * 图片
+     * 图片.
      *
      * @return array
      */

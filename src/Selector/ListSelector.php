@@ -16,7 +16,7 @@ use Stringy\Stringy as S;
 class ListSelector extends AbstractSelector
 {
     /**
-     * 赞同
+     * 赞同.
      *
      * @return string
      */
@@ -26,7 +26,7 @@ class ListSelector extends AbstractSelector
     }
 
     /**
-     * 作者
+     * 作者.
      *
      * @return string
      */
@@ -36,7 +36,7 @@ class ListSelector extends AbstractSelector
     }
 
     /**
-     * 作者链接
+     * 作者链接.
      *
      * @return null|string
      */
@@ -46,7 +46,7 @@ class ListSelector extends AbstractSelector
     }
 
     /**
-     * 作者一句话介绍
+     * 作者一句话介绍.
      *
      * @return null|string
      */
@@ -68,7 +68,7 @@ class ListSelector extends AbstractSelector
     }
 
     /**
-     * 评论
+     * 评论.
      *
      * @return int
      */
@@ -78,7 +78,7 @@ class ListSelector extends AbstractSelector
     }
 
     /**
-     * 回答时间
+     * 回答时间.
      *
      * @return int
      */

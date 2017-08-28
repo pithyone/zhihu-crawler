@@ -26,7 +26,7 @@ use Stringy\Stringy as S;
 class CollectionSelector extends ListSelector
 {
     /**
-     * 标题
+     * 标题.
      *
      * @return string
      */
@@ -38,7 +38,7 @@ class CollectionSelector extends ListSelector
     }
 
     /**
-     * 回答链接
+     * 回答链接.
      *
      * @return null|string
      */

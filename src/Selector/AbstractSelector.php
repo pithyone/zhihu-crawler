@@ -40,7 +40,7 @@ class AbstractSelector
         try {
             return call_user_func([$this, $name]);
         } catch (\Exception $e) {
-            return null;
+            return;
         }
     }
 }
