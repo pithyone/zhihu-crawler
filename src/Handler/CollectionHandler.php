@@ -8,19 +8,14 @@
 
 namespace pithyone\zhihu\crawler\Handler;
 
-use GuzzleHttp\Client;
-use Stringy\Stringy as S;
+use pithyone\zhihu\crawler\Selector\CollectionSelector;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class CollectionHandler.
  */
 class CollectionHandler extends AbstractHandler
 {
-    /**
-     * @var Client
-     */
-    protected $client;
-
     /**
      * @var string 收藏夹ID
      */
@@ -34,13 +29,12 @@ class CollectionHandler extends AbstractHandler
     /**
      * CollectionHandler constructor.
      *
-     * @param Client $client
      * @param string $collectionId
      * @param int    $page
      */
-    public function __construct(Client $client, $collectionId, $page)
+    public function __construct($collectionId, $page = 1)
     {
-        $this->client ?: $this->client = $client;
+        parent::__construct();
         $this->collectionId ?: $this->collectionId = $collectionId;
         $this->page ?: $this->page = $page;
     }
@@ -48,50 +42,31 @@ class CollectionHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    protected function page()
+    public function pick($callback = null)
     {
-        $response = $this->client->get("/collection/{$this->collectionId}", ['query' => "page={$this->page}"]);
+        $crawler = $this->client->request(
+            'GET',
+            self::BASE_URI."/collection/{$this->collectionId}?page={$this->page}"
+        );
 
-        return (string) $response->getBody();
-    }
+        return $crawler
+            ->filter('div[class="zu-main-content"] div[class="zm-item"]')
+            ->each(function (Crawler $node) use ($callback) {
+                $collectionSelector = new CollectionSelector($node);
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function rules()
-    {
-        return [
-            'title'       => ['h2[class="zm-item-title"]', 'text'],
-            'link'        => ['link', 'href'],
-            'vote'        => ['a[class^="zm-item-vote-count"]', 'text'],
-            'author'      => ['a[class="author-link"]', 'text'],
-            'author_link' => ['a[class="author-link"]', 'href'],
-            'bio'         => ['span[class="bio"]', 'title'],
-            'create_time' => ['div[class^="zm-item-answer"]', 'data-created'],
-            'summary'     => [
-                'div[class*="summary"]',
-                'text',
-                '-a',
-                function ($text) {
-                    return (string) S::create($text)->collapseWhitespace();
-                },
-            ],
-            'comment'     => [
-                'a[name="addcomment"]',
-                'text',
-                '',
-                function ($text) {
-                    return intval($text);
-                },
-            ],
-        ];
-    }
+                $item = [
+                    'title'       => $collectionSelector->title,
+                    'link'        => $collectionSelector->link,
+                    'vote'        => $collectionSelector->vote,
+                    'author'      => $collectionSelector->author,
+                    'author_link' => $collectionSelector->author_link,
+                    'bio'         => $collectionSelector->bio,
+                    'summary'     => $collectionSelector->summary,
+                    'comment'     => $collectionSelector->comment,
+                    'created'     => $collectionSelector->created,
+                ];
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function range()
-    {
-        return 'div[class="zu-main-content"] div[class="zm-item"]';
+                return is_callable($callback) ? call_user_func($callback, $item) : $item;
+            });
     }
 }

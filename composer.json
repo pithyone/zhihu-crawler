@@ -10,15 +10,21 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^6.3",
-        "jaeger/querylist": "^3.2",
-        "monolog/monolog": "^1.23",
+        "fabpot/goutte": "^3.2",
         "voku/arrayy": "^3.6",
         "danielstjules/stringy": "^3.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
     },
     "autoload": {
         "psr-4": {
             "pithyone\\zhihu\\crawler\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "pithyone\\zhihu\\crawler\\tests\\": "tests/"
         }
     }
 }

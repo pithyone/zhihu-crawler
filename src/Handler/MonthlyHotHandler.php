@@ -8,8 +8,8 @@
 
 namespace pithyone\zhihu\crawler\Handler;
 
-use GuzzleHttp\Client;
-use Stringy\Stringy as S;
+use pithyone\zhihu\crawler\Selector\MonthlyHotSelector;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class MonthlyHotHandler.
@@ -17,67 +17,30 @@ use Stringy\Stringy as S;
 class MonthlyHotHandler extends AbstractHandler
 {
     /**
-     * @var Client
-     */
-    protected $client;
-
-    /**
-     * MonthlyHotHandler constructor.
-     *
-     * @param Client $client
-     */
-    public function __construct(Client $client)
-    {
-        $this->client ?: $this->client = $client;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    protected function page()
+    public function pick($callback = null)
     {
-        $response = $this->client->get('/explore#monthly-hot');
+        $crawler = $this->client->request('GET', self::BASE_URI."/explore#monthly-hot");
 
-        return (string) $response->getBody();
-    }
+        return $crawler
+            ->filter('div[data-type="monthly"] div[class^="explore-feed"]')
+            ->each(function (Crawler $node) use ($callback) {
+                $monthlyHotSelector = new MonthlyHotSelector($node);
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function rules()
-    {
-        return [
-            'title'       => ['a[class="question_link"]', 'text'],
-            'link'        => ['a[class="question_link"]', 'href'],
-            'vote'        => ['a[class^="zm-item-vote-count"]', 'text'],
-            'author'      => ['a[class="author-link"]', 'text'],
-            'author_link' => ['a[class="author-link"]', 'href'],
-            'bio'         => ['span[class="bio"]', 'title'],
-            'create_time' => ['div[class^="zm-item-answer"]', 'data-created'],
-            'summary'     => [
-                'div[class*="summary"]',
-                'text',
-                '-a',
-                function ($text) {
-                    return (string) S::create($text)->collapseWhitespace();
-                },
-            ],
-            'comment'     => [
-                'a[name="addcomment"]',
-                'text',
-                '',
-                function ($text) {
-                    return intval($text);
-                },
-            ],
-        ];
-    }
+                $item = [
+                    'title'       => $monthlyHotSelector->title,
+                    'link'        => $monthlyHotSelector->link,
+                    'vote'        => $monthlyHotSelector->vote,
+                    'author'      => $monthlyHotSelector->author,
+                    'author_link' => $monthlyHotSelector->author_link,
+                    'bio'         => $monthlyHotSelector->bio,
+                    'summary'     => $monthlyHotSelector->summary,
+                    'comment'     => $monthlyHotSelector->comment,
+                    'created'     => $monthlyHotSelector->created,
+                ];
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function range()
-    {
-        return 'div[data-type="monthly"] div[class^="explore-feed"]';
+                return is_callable($callback) ? call_user_func($callback, $item) : $item;
+            });
     }
 }

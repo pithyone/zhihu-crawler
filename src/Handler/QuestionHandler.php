@@ -8,7 +8,7 @@
 
 namespace pithyone\zhihu\crawler\Handler;
 
-use GuzzleHttp\Client;
+use pithyone\zhihu\crawler\Selector\QuestionSelector;
 
 /**
  * Class QuestionHandler.
@@ -16,45 +16,38 @@ use GuzzleHttp\Client;
 class QuestionHandler extends AbstractHandler
 {
     /**
-     * @var Client
-     */
-    protected $client;
-
-    /**
-     * @var string 问题ID
+     * @var string
      */
     protected $questionId;
 
     /**
      * QuestionHandler constructor.
      *
-     * @param Client $client
-     * @param string $questionId
+     * @param string $questionId 问题ID
      */
-    public function __construct(Client $client, $questionId)
+    public function __construct($questionId)
     {
-        $this->client ?: $this->client = $client;
+        parent::__construct();
         $this->questionId ?: $this->questionId = $questionId;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function page()
+    public function pick($callback = null)
     {
-        $response = $this->client->get("/question/{$this->questionId}");
+        $crawler = $this->client->request('GET', self::BASE_URI."/question/{$this->questionId}");
+        $questionSelector = new QuestionSelector($crawler);
 
-        return (string) $response->getBody();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function rules()
-    {
-        return [
-            'title'       => ['h1[class="QuestionHeader-title"]', 'text'],
-            'description' => ['span[class="RichText"]', 'text'],
+        $item = [
+            'title'       => $questionSelector->title,
+            'description' => $questionSelector->description,
+            'comment'     => $questionSelector->comment,
+            'followers'   => $questionSelector->followers,
+            'viewed'      => $questionSelector->viewed,
+            'answer'      => $questionSelector->answer,
         ];
+
+        return is_callable($callback) ? call_user_func($callback, $item) : $item;
     }
 }
