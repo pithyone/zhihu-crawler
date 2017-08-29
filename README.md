@@ -1,6 +1,9 @@
 # zhihu-crawler
 
 [![StyleCI](https://styleci.io/repos/98495729/shield?branch=master&style=flat)](https://styleci.io/repos/98495729)
+[![Build Status](https://travis-ci.org/pithyone/zhihu-crawler.svg?branch=master)](https://travis-ci.org/pithyone/zhihu-crawler)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/pithyone/zhihu-crawler/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/pithyone/zhihu-crawler/v/stable)](https://packagist.org/packages/pithyone/zhihu-crawler)
 [![Latest Unstable Version](https://poser.pugx.org/pithyone/zhihu-crawler/v/unstable)](https://packagist.org/packages/pithyone/zhihu-crawler)
 [![License](https://poser.pugx.org/pithyone/zhihu-crawler/license)](https://packagist.org/packages/pithyone/zhihu-crawler)
