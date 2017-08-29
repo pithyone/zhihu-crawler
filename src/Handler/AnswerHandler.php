@@ -10,19 +10,14 @@ namespace pithyone\zhihu\crawler\Handler;
 
 use Arrayy\Arrayy as A;
 use GuzzleHttp\Client;
-use QL\QueryList;
-use Stringy\Stringy as S;
+use pithyone\zhihu\crawler\Selector\AnswerSelector;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class AnswerHandler.
  */
 class AnswerHandler extends AbstractHandler
 {
-    /**
-     * @var Client
-     */
-    protected $client;
-
     /**
      * @var string 问题ID
      */
@@ -36,13 +31,12 @@ class AnswerHandler extends AbstractHandler
     /**
      * AnswerHandler constructor.
      *
-     * @param Client $client
      * @param string $questionId
      * @param int    $page
      */
-    public function __construct(Client $client, $questionId, $page)
+    public function __construct($questionId, $page = 1)
     {
-        $this->client ?: $this->client = $client;
+        parent::__construct();
         $this->questionId ?: $this->questionId = $questionId;
         $this->page ?: $this->page = $page;
     }
@@ -50,78 +44,48 @@ class AnswerHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    protected function page()
+    public function pick($callback = null)
     {
-        $offset = ($this->page - 1) * 10;
-        $data = [
+        $crawler = new Crawler();
+        $crawler->addHtmlContent($this->content());
+
+        return $crawler
+            ->filter('div[tabindex="-1"]')
+            ->each(function (Crawler $node) use ($callback) {
+                $answerSelector = new AnswerSelector($node);
+
+                $item = [
+                    'avatar'      => $answerSelector->avatar,
+                    'author'      => $answerSelector->author,
+                    'author_link' => $answerSelector->author_link,
+                    'bio'         => $answerSelector->bio,
+                    'vote'        => $answerSelector->vote,
+                    'images'      => $answerSelector->images,
+                    'comment'     => $answerSelector->comment,
+                ];
+
+                return is_callable($callback) ? call_user_func($callback, $item) : $item;
+            });
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function content()
+    {
+        $parameters = [
             'method' => 'next',
             'params' => json_encode([
                 'url_token' => $this->questionId,
                 'pagesize'  => 10,
-                'offset'    => $offset > 0 ? $offset : 0,
+                'offset'    => ($this->page - 1) * 10,
             ]),
         ];
-        $response = $this->client->post('/node/QuestionAnswerListV2', ['form_params' => $data]);
+
+        $client = new Client();
+        $response = $client->post(self::BASE_URI.'/node/QuestionAnswerListV2', ['form_params' => $parameters]);
         $array = \GuzzleHttp\json_decode((string) $response->getBody(), true);
 
         return A::create($array)->get('msg')->implode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function rules()
-    {
-        return [
-            'avatar'      => ['img[class^="zm-list-avatar"]', 'src'],
-            'author'      => ['a[class="author-link"]', 'text'],
-            'author_link' => ['a[class="author-link"]', 'href'],
-            'bio'         => ['span[class="bio"]', 'title'],
-            'vote'        => ['span[class="count"]', 'text'],
-            'images'      => ['div[class^="zm-editable-content"]', 'html'],
-            'link'        => ['link[itemprop="url"]', 'href'],
-            'comment'     => [
-                'a[name="addcomment"]',
-                'text',
-                '',
-                function ($text) {
-                    return intval($text);
-                },
-            ],
-            'summary'     => [
-                'div[class^="zm-editable-content"]',
-                'text',
-                '',
-                function ($text) {
-                    return (string) S::create($text)->substr(0, 350)->collapseWhitespace();
-                },
-            ],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function range()
-    {
-        return 'div[tabindex="-1"]';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function pick($callback = null)
-    {
-        return QueryList::Query($this->page(), $this->rules(), $this->range())->getData(
-            function ($item) use ($callback) {
-                $handler = new ImageHandler($item['images']);
-                $images = $handler->pick(function ($data) {
-                    return $data['image'];
-                });
-                $item['images'] = A::create($images)->stripEmpty()->values()->toArray();
-
-                return is_callable($callback) ? call_user_func($callback, $item) : $item;
-            }
-        );
     }
 }

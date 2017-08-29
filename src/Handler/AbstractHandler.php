@@ -8,39 +8,26 @@
 
 namespace pithyone\zhihu\crawler\Handler;
 
-use QL\QueryList;
+use Goutte\Client;
 
 /**
  * Class AbstractHandler.
  */
 abstract class AbstractHandler
 {
-    /**
-     * 要抓取的网页URL地址或网页源代码
-     *
-     * @return string
-     */
-    abstract protected function page();
+    const BASE_URI = 'https://www.zhihu.com';
 
     /**
-     * 采集规则.
-     *
-     * @link https://doc.querylist.cc/site/index/doc/30
-     *
-     * @return array
+     * @var Client
      */
-    abstract protected function rules();
+    protected $client;
 
     /**
-     * 区域选择器.
-     *
-     * @link http://doc.querylist.cc/site/index/doc/29
-     *
-     * @return string
+     * AbstractHandler constructor.
      */
-    protected function range()
+    public function __construct()
     {
-        return '';
+        $this->client ?: $this->client = new Client();
     }
 
     /**
@@ -50,8 +37,5 @@ abstract class AbstractHandler
      *
      * @return array
      */
-    public function pick($callback = null)
-    {
-        return QueryList::Query($this->page(), $this->rules(), $this->range())->getData($callback);
-    }
+    abstract public function pick($callback = null);
 }
