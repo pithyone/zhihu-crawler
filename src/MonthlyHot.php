@@ -20,15 +20,32 @@ class MonthlyHot extends Base
             ->rules([
                 'title'       => ['a[class="question_link"]', 'text'],
                 'link'        => ['a[class="question_link"]', 'href'],
-                'vote'        => ['a[class^="zm-item-vote-count"]', 'text'],
+                'vote'        => [
+                    'div[class="zm-item-vote-info"]',
+                    'data-votecount',
+                    '',
+                    function ($text) {
+                        return (int) $text;
+                    },
+                ],
                 'author'      => ['a[class="author-link"]', 'text'],
                 'author_link' => ['a[class="author-link"]', 'href'],
                 'bio'         => ['span[class="bio"]', 'title'],
                 'summary'     => ['div[class*="summary"]', 'text', '-a'],
-                'create_time' => ['div[class^="zm-item-answer"]', 'data-created'],
+                'create_time' => [
+                    'div[class^="zm-item-answer"]',
+                    'data-created',
+                    '',
+                    function ($text) {
+                        return (int) $text;
+                    },
+                ],
                 'comment'     => [
-                    'a[name="addcomment"]', 'text', '', function ($text) {
-                        return intval($text);
+                    'a[name="addcomment"]',
+                    'text',
+                    '',
+                    function ($text) {
+                        return (int) $text;
                     },
                 ],
             ])

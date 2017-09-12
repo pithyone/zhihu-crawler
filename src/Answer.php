@@ -80,16 +80,29 @@ class Answer extends Base
                     'author'      => ['a[class="author-link"]', 'text'],
                     'author_link' => ['a[class="author-link"]', 'href'],
                     'bio'         => ['span[class="bio"]', 'title'],
-                    'vote'        => ['span[class="count"]', 'text'],
+                    'vote'        => [
+                        'div[class="zm-item-vote-info"]',
+                        'data-votecount',
+                        '',
+                        function ($text) {
+                            return (int) $text;
+                        },
+                    ],
                     'content'     => ['div[class^="zm-editable-content"]', 'html'],
                     'link'        => ['link[itemprop="url"]', 'href'],
                     'comment'     => [
-                        'a[name="addcomment"]', 'text', '', function ($text) {
-                            return intval($text);
+                        'a[name="addcomment"]',
+                        'text',
+                        '',
+                        function ($text) {
+                            return (int) $text;
                         },
                     ],
                     'summary'     => [
-                        'div[class^="zm-editable-content"]', 'text', '', function ($text) {
+                        'div[class^="zm-editable-content"]',
+                        'text',
+                        '',
+                        function ($text) {
                             $text = str_replace(PHP_EOL, '', $text);
 
                             return trim(mb_substr($text, 0, 350, 'utf-8'));
