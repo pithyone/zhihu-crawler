@@ -8,7 +8,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/pithyone/zhihu-crawler/v/unstable)](https://packagist.org/packages/pithyone/zhihu-crawler)
 [![License](https://poser.pugx.org/pithyone/zhihu-crawler/license)](https://packagist.org/packages/pithyone/zhihu-crawler)
 
-🕷 轻量级知乎爬虫，基于 **[Goutte](https://github.com/FriendsOfPHP/Goutte)**
+轻量级知乎爬虫，基于 [Goutte](https://github.com/FriendsOfPHP/Goutte)
 
 ## Feature
 
@@ -74,7 +74,7 @@ use pithyone\zhihu\crawler\Handler\MonthlyHotHandler;
 
 $monthlyHotHandler = new MonthlyHotHandler();
 
-$list = $monthlyHotHandler->pick();
+$monthlyHotHandler->pick();
 ```
 
 ## Links
