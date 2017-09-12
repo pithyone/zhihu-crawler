@@ -18,11 +18,11 @@ class ListSelector extends AbstractSelector
     /**
      * 赞同.
      *
-     * @return string
+     * @return int
      */
     protected function vote()
     {
-        return $this->crawler->filter('a[class^="zm-item-vote-count"]')->text();
+        return (int) $this->crawler->filter('div[class="zm-item-vote-info"]')->attr('data-votecount');
     }
 
     /**

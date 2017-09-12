@@ -35,14 +35,6 @@ class AnswerSelector extends ListSelector
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function vote()
-    {
-        return $this->crawler->filter('span[class="count"]')->text();
-    }
-
-    /**
      * 图片.
      *
      * @return array
