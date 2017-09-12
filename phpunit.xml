@@ -16,10 +16,7 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">src/Handler/</directory>
-            <exclude>
-                <file>src/Handler/AbstractHandler.php</file>
-            </exclude>
+            <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>
 </phpunit>
