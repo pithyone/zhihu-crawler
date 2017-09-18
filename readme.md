@@ -79,9 +79,9 @@ $monthlyHotHandler->pick();
 
 ## Links
 
-- [知乎热门钓鱼贴图片版](http://zhihu.pithyone.tk/)
-- [知乎热门收藏RSS](http://pithyone.tk/feed/zhihu/collection)
-- [知乎本月最热RSS](http://pithyone.tk/feed/zhihu/month)
+- [知乎热门钓鱼贴图片版](https://pithyone.github.io/zhimg/#/)
+- [知乎热门收藏RSS](https://api-pithyone.000webhostapp.com/feed/zhihu/collection)
+- [知乎本月最热RSS](https://api-pithyone.000webhostapp.com/feed/zhihu/month)
 
 ## License
 
