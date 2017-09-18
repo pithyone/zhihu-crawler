@@ -14,6 +14,7 @@ use Symfony\Component\DomCrawler\Crawler;
 /**
  * Class AnswerSelector.
  *
+ * @property $link
  * @property $avatar
  * @property $author
  * @property $author_link
@@ -49,5 +50,15 @@ class AnswerSelector extends ListSelector
             });
 
         return A::create($array)->stripEmpty()->values()->toArray();
+    }
+
+    /**
+     * 回答链接.
+     *
+     * @return null|string
+     */
+    protected function link()
+    {
+        return $this->crawler->filter('link[itemprop="url"]')->attr('href');
     }
 }

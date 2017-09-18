@@ -55,6 +55,7 @@ class AnswerHandler extends AbstractHandler
                 $answerSelector = new AnswerSelector($node);
 
                 $item = [
+                    'link'        => $answerSelector->link,
                     'avatar'      => $answerSelector->avatar,
                     'author'      => $answerSelector->author,
                     'author_link' => $answerSelector->author_link,
