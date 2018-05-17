@@ -2,7 +2,6 @@
     "name": "pithyone/zhihu-crawler",
     "type": "library",
     "description": "轻量级知乎爬虫",
-    "license": "MIT",
     "authors": [
         {
             "name": "wangbing",
