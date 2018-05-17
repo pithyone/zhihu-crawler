@@ -43,7 +43,7 @@ use pithyone\zhihu\crawler\Model\Explore;
 Explore::get();
 ```
 
-Explore Model:
+Question Model:
 
 ```php
 <?php
