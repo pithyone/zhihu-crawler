@@ -48,6 +48,7 @@ class AnswersTest extends TestCase
     {
         return [
             ['<div class="zm-item"><div class="zh-summary"></div></div>'],
+            ['<div class="zm-item"><div class="zh-summary"></div><link></div>'],
             ['<div class="zm-item"><div class="zh-summary"></div><div class="zm-item-title"></div></div>'],
         ];
     }
@@ -56,7 +57,9 @@ class AnswersTest extends TestCase
     {
         return [
             ['<div class="zm-item"><div class="zh-summary"></div><div class="zm-item-title"></div><link></div>'],
+            ['<div class="zm-item"><div class="zh-summary"></div><div class="zm-item-title">text</div><link></div>'],
             ['<div class="zm-item"><div class="zh-summary"></div><div class="zm-item-title"></div><link href=""></div>'],
+            ['<div class="zm-item"><div class="zh-summary"></div><div class="zm-item-title">text</div><link href=""></div>'],
         ];
     }
 }
