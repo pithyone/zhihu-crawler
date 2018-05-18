@@ -13,7 +13,7 @@ class Answers implements Extractor
                 'author'      => Author::extract($node),
                 'author_link' => AuthorLink::extract($node),
                 'bio'         => Bio::extract($node),
-                'vote_count'  => $node->filter('div[class="zm-item-vote-info"]')->attr('data-votecount'),
+                'vote_count'  => $node->filter('.zm-item-vote-info')->attr('data-votecount'),
                 'images'      => Images::extract($node),
             ];
         });
