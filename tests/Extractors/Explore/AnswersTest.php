@@ -50,7 +50,11 @@ class AnswersTest extends TestCase
         return [
             ['<div class="feed-item"><div class="zh-summary"></div></div>'],
             ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link"></div></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><link></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><div class="zm-item-vote-info"></div></div>'],
             ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link"></div><link></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link"></div><div class="zm-item-vote-info"></div></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><link><div class="zm-item-vote-info"></div></div>'],
         ];
     }
 
@@ -58,8 +62,13 @@ class AnswersTest extends TestCase
     {
         return [
             ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link"></div><link><div class="zm-item-vote-info"></div></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link">text</div><link><div class="zm-item-vote-info"></div></div>'],
             ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link"></div><link href=""><div class="zm-item-vote-info"></div></div>'],
-            ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link"></div><link href=""><div class="zm-item-vote-info" data-votecount=""></div></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link"></div><link href><div class="zm-item-vote-info" data-votecount=""></div></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link">text</div><link href=""><div class="zm-item-vote-info"></div></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link">text</div><link><div class="zm-item-vote-info" data-votecount=""></div></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link"></div><link=""><div class="zm-item-vote-info" data-votecount=""></div></div>'],
+            ['<div class="feed-item"><div class="zh-summary"></div><div class="question_link">text</div><link href=""><div class="zm-item-vote-info" data-votecount=""></div></div>'],
         ];
     }
 }
