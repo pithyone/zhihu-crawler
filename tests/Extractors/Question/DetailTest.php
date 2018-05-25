@@ -22,7 +22,9 @@ class DetailTest extends TestCase
     {
         return [
             ['<div></div>', ''],
-            ['<div class="RichText">text</div>', 'text'],
+            ['<div class="QuestionHeader-detail"></div>', ''],
+            ['<div class="QuestionHeader-detail"><span></span></div>', ''],
+            ['<div class="QuestionHeader-detail"><span>text</span></div>', 'text'],
         ];
     }
 }

@@ -9,7 +9,7 @@ class Detail implements Extractor
     static public function extract($crawler)
     {
         try {
-            return $crawler->filter('.RichText')->text();
+            return $crawler->filter('.QuestionHeader-detail span')->text();
         } catch (\Exception $e) {
             return '';
         }
