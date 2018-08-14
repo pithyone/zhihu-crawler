@@ -1,28 +1,25 @@
 {
     "name": "pithyone/zhihu-crawler",
-    "type": "library",
     "description": "轻量级知乎爬虫",
-    "authors": [
-        {
-            "name": "wangbing",
-            "email": "pithyone@vip.qq.com"
-        }
-    ],
+    "type": "library",
+    "license": "MIT",
     "require": {
         "php": ">=5.5.0",
-        "fabpot/goutte": "^3.2"
+        "fabpot/goutte": "^3.2",
+        "symfony/dependency-injection": "^2.8"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4"
+        "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
+        "mockery/mockery": "^0.9"
     },
     "autoload": {
         "psr-4": {
-            "pithyone\\zhihu\\crawler\\": "src/"
+            "ZhihuCrawler\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "pithyone\\zhihu\\crawler\\tests\\": "tests/"
+            "ZhihuCrawler\\Tests\\": "tests/"
         }
     }
 }

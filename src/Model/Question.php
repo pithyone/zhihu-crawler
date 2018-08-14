@@ -1,29 +1,37 @@
 <?php
 
-namespace pithyone\zhihu\crawler\Model;
+namespace ZhihuCrawler\Model;
 
-use Goutte\Client;
-use pithyone\zhihu\crawler\Extractors\Question\AnswerCount;
-use pithyone\zhihu\crawler\Extractors\Question\Detail;
-use pithyone\zhihu\crawler\Extractors\Question\Title;
+use ZhihuCrawler\Extractors\QuestionExtractor;
+use ZhihuCrawler\Traits\ClientTrait;
 
 class Question
 {
+    use ClientTrait;
+
     /**
-     * @param string $id
-     *
+     * @var QuestionExtractor
+     */
+    protected $questionExtractor;
+
+    /**
+     * @param QuestionExtractor $questionExtractor
+     */
+    public function __construct(QuestionExtractor $questionExtractor)
+    {
+        $this->questionExtractor = $questionExtractor;
+    }
+
+    /**
+     * @param int $id
      * @return array
      */
-    static public function find($id)
+    public function get($id)
     {
-        $client = new Client();
+        $crawler = $this->client->request('GET', 'https://www.zhihu.com/question/' . $id);
 
-        $crawler = $client->request('GET', 'https://www.zhihu.com/question/'.$id);
+        $this->questionExtractor->setCrawler($crawler);
 
-        return [
-            'title'        => Title::extract($crawler),
-            'detail'       => Detail::extract($crawler),
-            'answer_count' => AnswerCount::extract($crawler),
-        ];
+        return $this->questionExtractor->toArray();
     }
 }

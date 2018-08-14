@@ -1,24 +1,37 @@
 <?php
 
-namespace pithyone\zhihu\crawler\Model;
+namespace ZhihuCrawler\Model;
 
-use Goutte\Client;
-use pithyone\zhihu\crawler\Extractors\Collection\Answers;
-use pithyone\zhihu\crawler\Extractors\Collection\Title;
+use ZhihuCrawler\Extractors\CollectionExtractor;
+use ZhihuCrawler\Traits\ClientTrait;
 
 class Collection
 {
+    use ClientTrait;
+
     /**
-     * @param string $id
-     *
+     * @var CollectionExtractor
+     */
+    protected $collectionExtractor;
+
+    /**
+     * @param CollectionExtractor $collectionExtractor
+     */
+    public function __construct(CollectionExtractor $collectionExtractor)
+    {
+        $this->collectionExtractor = $collectionExtractor;
+    }
+
+    /**
+     * @param int $id
      * @return array
      */
-    static public function find($id)
+    public function get($id)
     {
-        $client = new Client();
+        $crawler = $this->client->request('GET', 'https://www.zhihu.com/collection/' . $id);
 
-        $crawler = $client->request('GET', 'https://www.zhihu.com/collection/'.$id);
+        $this->collectionExtractor->setCrawler($crawler);
 
-        return ['title' => Title::extract($crawler), 'answers' => Answers::extract($crawler)];
+        return $this->collectionExtractor->toArray();
     }
 }

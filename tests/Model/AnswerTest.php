@@ -1,30 +1,66 @@
 <?php
 
-namespace pithyone\zhihu\crawler\tests\Model;
+namespace ZhihuCrawler\Tests\Model;
 
-use PHPUnit\Framework\TestCase;
-use pithyone\zhihu\crawler\Model\Answer;
+use GuzzleHttp\Client;
+use Symfony\Component\DomCrawler\Crawler;
+use ZhihuCrawler\Extractors\QuestionExtractor;
+use ZhihuCrawler\Model\Answer;
+use ZhihuCrawler\Tests\TestCase;
 
 class AnswerTest extends TestCase
 {
     /**
-     * @dataProvider getProvider
+     * @return void
      */
-    public function testGet($id, $offset)
+    public function testGetList()
     {
-        $answer = Answer::get($id, $offset);
+        $response = \Mockery::mock();
 
-        $this->assertInternalType('array', $answer);
+        $response->shouldReceive('getBody')
+            ->twice()
+            ->withNoArgs()
+            ->andReturn('{"r":0,"msg":["foo","bar"]}');
 
-        $this->assertArrayHasKey('answers', $answer);
-    }
+        $client = \Mockery::mock(Client::class);
 
-    public function getProvider()
-    {
-        return [
-            [0, 0],
-            [272059466, 0],
-            [272059466, 10000],
-        ];
+        $client->shouldReceive('post')
+            ->with('https://www.zhihu.com/node/QuestionAnswerListV2', ['form_params' => [
+                'method' => 'next',
+                'params' => '{"url_token":0,"pagesize":10,"offset":0}',
+            ],])
+            ->andReturn($response);
+
+        $client->shouldReceive('post')
+            ->with('https://www.zhihu.com/node/QuestionAnswerListV2', ['form_params' => [
+                'method' => 'next',
+                'params' => '{"url_token":0,"pagesize":10,"offset":10}',
+            ],])
+            ->andReturn($response);
+
+        $crawler = \Mockery::mock(Crawler::class);
+
+        $crawler->shouldReceive('addContent')
+            ->once()
+            ->with('foobarfoobar');
+
+        $questionExtractor = \Mockery::mock(QuestionExtractor::class);
+
+        $questionExtractor->shouldReceive('setCrawler')
+            ->once()
+            ->with($crawler)
+            ->andReturnSelf();
+
+        $questionExtractor->shouldReceive('getAnswerList')
+            ->once()
+            ->withNoArgs()
+            ->andReturn(['item']);
+
+        $answer = new Answer($questionExtractor);
+
+        $answer->setClient($client);
+        $answer->setCrawler($crawler);
+
+        $this->assertEquals(['item'], $answer->getList(0, 15));
     }
 }

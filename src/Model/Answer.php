@@ -1,40 +1,66 @@
 <?php
 
-namespace pithyone\zhihu\crawler\Model;
+namespace ZhihuCrawler\Model;
 
-use GuzzleHttp\Client;
-use pithyone\zhihu\crawler\Extractors\Answer\Answers;
-use Symfony\Component\DomCrawler\Crawler;
+use ZhihuCrawler\Extractors\QuestionExtractor;
+use ZhihuCrawler\Traits\CrawlerTrait;
+use ZhihuCrawler\Traits\GuzzleClientTrait;
 
 class Answer
 {
+    use GuzzleClientTrait, CrawlerTrait;
+
+    const PAGE_SIZE = 10;
+
     /**
-     * @param string $id
-     * @param int    $offset
-     *
+     * @var QuestionExtractor
+     */
+    protected $questionExtractor;
+
+    /**
+     * @param QuestionExtractor $questionExtractor
+     */
+    public function __construct(QuestionExtractor $questionExtractor)
+    {
+        $this->questionExtractor = $questionExtractor;
+    }
+
+    /**
+     * @param int $questionId
+     * @param int $size
      * @return array
      */
-    static public function get($id, $offset = 0)
+    public function getList($questionId, $size = self::PAGE_SIZE)
     {
-        $client = new Client();
+        $content = '';
 
-        $response = $client->post('https://www.zhihu.com/node/QuestionAnswerListV2', [
-            'form_params' => [
-                'method' => 'next',
-                'params' => json_encode(['url_token' => $id, 'pagesize' => 10, 'offset' => $offset]),
-            ],
-        ]);
-
-        $data = \GuzzleHttp\json_decode((string) $response->getBody(), true);
-
-        if (!isset($data['msg']) || !is_array($data['msg'])) {
-            throw new \InvalidArgumentException('response mag should be array');
+        for ($offset = 0; $offset < $size; $offset += self::PAGE_SIZE) {
+            $content .= $this->getContent($questionId, $offset);
         }
 
-        $html = implode('', $data['msg']);
+        $this->crawler->addContent($content);
 
-        $crawler = new Crawler($html);
+        $this->questionExtractor->setCrawler($this->crawler);
 
-        return ['answers' => Answers::extract($crawler)];
+        return $this->questionExtractor->getAnswerList();
+    }
+
+    /**
+     * @param int $questionId
+     * @param int $offset
+     * @return string
+     */
+    protected function getContent($questionId, $offset)
+    {
+        $response = $this->client->post('https://www.zhihu.com/node/QuestionAnswerListV2', [
+            'form_params' => [
+                'method' => 'next',
+                'params' => \GuzzleHttp\json_encode(['url_token' => $questionId, 'pagesize' => self::PAGE_SIZE, 'offset' => $offset]),
+            ]
+        ]);
+
+        $data = \GuzzleHttp\json_decode((string)$response->getBody(), true);
+
+        return implode($data['msg']);
     }
 }
