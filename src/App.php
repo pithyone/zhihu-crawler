@@ -10,17 +10,18 @@ use Symfony\Component\DomCrawler\Crawler;
 use ZhihuCrawler\Extractors\AnswerExtractor;
 use ZhihuCrawler\Extractors\CollectionExtractor;
 use ZhihuCrawler\Extractors\MonthlyHotExtractor;
+use ZhihuCrawler\Extractors\QuestionAnswerExtractor;
 use ZhihuCrawler\Extractors\QuestionExtractor;
-use ZhihuCrawler\Model\Answer;
+use ZhihuCrawler\Model\QuestionAnswer;
 use ZhihuCrawler\Model\Collection;
 use ZhihuCrawler\Model\MonthlyHot;
 use ZhihuCrawler\Model\Question;
 
 /**
- * @property \ZhihuCrawler\Model\Answer $answer
  * @property \ZhihuCrawler\Model\Collection $collection
  * @property \ZhihuCrawler\Model\MonthlyHot $monthlyHot
  * @property \ZhihuCrawler\Model\Question $question
+ * @property \ZhihuCrawler\Model\QuestionAnswer $questionAnswer
  */
 class App
 {
@@ -35,6 +36,7 @@ class App
     private $extractorsServices = [
         'collectionExtractor' => CollectionExtractor::class,
         'monthlyHotExtractor' => MonthlyHotExtractor::class,
+        'questionAnswerExtractor' => QuestionAnswerExtractor::class,
         'questionExtractor' => QuestionExtractor::class
     ];
 
@@ -48,10 +50,10 @@ class App
         $this->registerClient();
         $this->registerCrawler();
         $this->registerExtractors();
-        $this->registerAnswer();
         $this->registerCollection();
         $this->registerMonthlyHot();
         $this->registerQuestion();
+        $this->registerQuestionAnswer();
     }
 
     /**
@@ -76,26 +78,12 @@ class App
     protected function registerExtractors()
     {
         $this->containerBuilder->register('answerExtractor', AnswerExtractor::class)
-            ->addMethodCall('setCrawler', [new Reference('crawler')]);
+            ->addArgument(new Reference('crawler'));
 
         foreach ($this->extractorsServices as $id => $class) {
             $this->containerBuilder->register($id, $class)
-                ->addMethodCall('setCrawler', [new Reference('crawler')])
-                ->addMethodCall('setAnswerExtractor', [new Reference('answerExtractor')]);
+                ->setArguments([new Reference('crawler'), new Reference('answerExtractor')]);
         }
-    }
-
-    /**
-     * @return void
-     */
-    protected function registerAnswer()
-    {
-        $this->containerBuilder->register('guzzleClient', GuzzleClient::class);
-
-        $this->containerBuilder->register('answer', Answer::class)
-            ->addArgument(new Reference('questionExtractor'))
-            ->addMethodCall('setClient', [new Reference('guzzleClient')])
-            ->addMethodCall('setCrawler', [new Reference('crawler')]);
     }
 
     /**
@@ -104,8 +92,7 @@ class App
     protected function registerCollection()
     {
         $this->containerBuilder->register('collection', Collection::class)
-            ->addArgument(new Reference('collectionExtractor'))
-            ->addMethodCall('setClient', [new Reference('client')]);
+            ->setArguments([new Reference('client'), new Reference('collectionExtractor')]);
     }
 
     /**
@@ -114,8 +101,7 @@ class App
     protected function registerMonthlyHot()
     {
         $this->containerBuilder->register('monthlyHot', MonthlyHot::class)
-            ->addArgument(new Reference('monthlyHotExtractor'))
-            ->addMethodCall('setClient', [new Reference('client')]);
+            ->setArguments([new Reference('client'), new Reference('monthlyHotExtractor')]);
     }
 
     /**
@@ -124,8 +110,18 @@ class App
     protected function registerQuestion()
     {
         $this->containerBuilder->register('question', Question::class)
-            ->addArgument(new Reference('questionExtractor'))
-            ->addMethodCall('setClient', [new Reference('client')]);
+            ->setArguments([new Reference('client'), new Reference('questionExtractor')]);
+    }
+
+    /**
+     * @return void
+     */
+    protected function registerQuestionAnswer()
+    {
+        $this->containerBuilder->register('guzzleClient', GuzzleClient::class);
+
+        $this->containerBuilder->register('questionAnswer', QuestionAnswer::class)
+            ->setArguments([new Reference('guzzleClient'), new Reference('crawler'), new Reference('questionAnswerExtractor')]);
     }
 
     /**

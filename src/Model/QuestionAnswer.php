@@ -2,35 +2,47 @@
 
 namespace ZhihuCrawler\Model;
 
-use ZhihuCrawler\Extractors\QuestionExtractor;
-use ZhihuCrawler\Traits\CrawlerTrait;
-use ZhihuCrawler\Traits\GuzzleClientTrait;
+use GuzzleHttp\Client;
+use Symfony\Component\DomCrawler\Crawler;
+use ZhihuCrawler\Extractors\QuestionAnswerExtractor;
 
-class Answer
+class QuestionAnswer
 {
-    use GuzzleClientTrait, CrawlerTrait;
-
     const PAGE_SIZE = 10;
 
     /**
-     * @var QuestionExtractor
+     * @var Client
      */
-    protected $questionExtractor;
+    protected $client;
 
     /**
-     * @param QuestionExtractor $questionExtractor
+     * @var Crawler
      */
-    public function __construct(QuestionExtractor $questionExtractor)
+    protected $crawler;
+
+    /**
+     * @var QuestionAnswerExtractor
+     */
+    protected $questionAnswerExtractor;
+
+    /**
+     * @param Client $client
+     * @param Crawler $crawler
+     * @param QuestionAnswerExtractor $questionAnswerExtractor
+     */
+    public function __construct(Client $client, Crawler $crawler, QuestionAnswerExtractor $questionAnswerExtractor)
     {
-        $this->questionExtractor = $questionExtractor;
+        $this->client = $client;
+        $this->crawler = $crawler;
+        $this->questionAnswerExtractor = $questionAnswerExtractor;
     }
 
     /**
      * @param int $questionId
      * @param int $size
-     * @return array
+     * @return QuestionAnswerExtractor
      */
-    public function getList($questionId, $size = self::PAGE_SIZE)
+    public function extract($questionId, $size = self::PAGE_SIZE)
     {
         $content = '';
 
@@ -40,9 +52,9 @@ class Answer
 
         $this->crawler->addContent($content);
 
-        $this->questionExtractor->setCrawler($this->crawler);
+        $this->questionAnswerExtractor->setCrawler($this->crawler);
 
-        return $this->questionExtractor->getAnswerList();
+        return $this->questionAnswerExtractor;
     }
 
     /**

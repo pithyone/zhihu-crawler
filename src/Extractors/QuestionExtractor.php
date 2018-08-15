@@ -2,14 +2,8 @@
 
 namespace ZhihuCrawler\Extractors;
 
-use Symfony\Component\DomCrawler\Crawler;
-use ZhihuCrawler\Traits\AnswerExtractorTrait;
-use ZhihuCrawler\Traits\CrawlerTrait;
-
-class QuestionExtractor
+class QuestionExtractor extends Extractor
 {
-    use CrawlerTrait, AnswerExtractorTrait;
-
     /**
      * @return string
      */
@@ -36,31 +30,5 @@ class QuestionExtractor
     public function getAnswerCount()
     {
         return (int)$this->crawler->filter('meta[itemProp="answerCount"]')->attr('content');
-    }
-
-    /**
-     * @return array
-     */
-    public function getAnswerList()
-    {
-        return $this->crawler->filter('div[tabindex="-1"]')->each(function (Crawler $node) {
-            $this->answerExtractor->setCrawler($node);
-
-            return array_merge([
-                'image_list' => $this->answerExtractor->getImageList()
-            ], $this->answerExtractor->toArray());
-        });
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return [
-            'title' => $this->getTitle(),
-            'detail' => $this->getDetail(),
-            'answer_count' => $this->getAnswerCount()
-        ];
     }
 }

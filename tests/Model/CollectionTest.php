@@ -12,7 +12,7 @@ class CollectionTest extends TestCase
     /**
      * @return void
      */
-    public function testGet()
+    public function testExtract()
     {
         $client = \Mockery::mock(Client::class);
 
@@ -26,15 +26,8 @@ class CollectionTest extends TestCase
             ->once()
             ->andReturnSelf();
 
-        $collectionExtractor->shouldReceive('toArray')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(['foo' => 'bar']);
+        $collection = new Collection($client, $collectionExtractor);
 
-        $collection = new Collection($collectionExtractor);
-
-        $collection->setClient($client);
-
-        $this->assertEquals(['foo' => 'bar'], $collection->get(0));
+        $this->assertInstanceOf(CollectionExtractor::class, $collection->extract(0));
     }
 }

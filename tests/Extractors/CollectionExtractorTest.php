@@ -4,6 +4,7 @@ namespace ZhihuCrawler\Tests\Extractors;
 
 use Mockery\MockInterface;
 use Symfony\Component\DomCrawler\Crawler;
+use ZhihuCrawler\Extractors\AnswerExtractor;
 use ZhihuCrawler\Extractors\CollectionExtractor;
 use ZhihuCrawler\Tests\TestCase;
 
@@ -26,9 +27,9 @@ class CollectionExtractorTest extends TestCase
     {
         parent::setUp();
 
-        $this->collectionExtractor = new CollectionExtractor();
-
         $this->crawler = \Mockery::mock(Crawler::class);
+
+        $this->collectionExtractor = new CollectionExtractor($this->crawler, \Mockery::mock(AnswerExtractor::class));
     }
 
     /**
@@ -67,22 +68,8 @@ class CollectionExtractorTest extends TestCase
 
         $this->collectionExtractor->setCrawler($this->crawler);
 
-        $this->assertEquals(['item'], $this->collectionExtractor->getList());
-    }
-
-    /**
-     * @return void
-     */
-    public function testToArray()
-    {
-        $collectionExtractor = \Mockery::mock(CollectionExtractor::class)->makePartial();
-
-        $collectionExtractor->shouldReceive('getTitle')->andReturn('title');
-        $collectionExtractor->shouldReceive('getList')->andReturn(['item']);
-
-        $this->assertEquals([
-            'title' => 'title',
-            'list' => ['item']
-        ], $collectionExtractor->toArray());
+        $this->assertEquals(['item'], $this->collectionExtractor->getList(function () {
+            return true;
+        }));
     }
 }

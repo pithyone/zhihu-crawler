@@ -3,11 +3,26 @@
 namespace ZhihuCrawler\Extractors;
 
 use Symfony\Component\DomCrawler\Crawler;
-use ZhihuCrawler\Traits\CrawlerTrait;
 
 class AnswerExtractor
 {
-    use CrawlerTrait;
+    /**
+     * @var Crawler
+     */
+    protected $crawler;
+
+    /**
+     * @var string
+     */
+    protected $questionTitle;
+
+    /**
+     * @param Crawler $crawler
+     */
+    public function __construct(Crawler $crawler)
+    {
+        $this->crawler = $crawler;
+    }
 
     /**
      * @return string
@@ -84,18 +99,27 @@ class AnswerExtractor
     }
 
     /**
-     * @return array
+     * @param Crawler $crawler
      */
-    public function toArray()
+    public function setCrawler($crawler)
     {
-        return [
-            'author' => $this->getAuthor(),
-            'author_bio' => $this->getAuthorBio(),
-            'author_link' => $this->getAuthorLink(),
-            'summary' => $this->getSummary(),
-            'link' => $this->getLink(),
-            'vote_count' => $this->getVoteCount()
-        ];
+        $this->crawler = $crawler;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQuestionTitle()
+    {
+        return $this->questionTitle;
+    }
+
+    /**
+     * @param string $questionTitle
+     */
+    public function setQuestionTitle($questionTitle)
+    {
+        $this->questionTitle = $questionTitle;
     }
 
     /**

@@ -19,26 +19,74 @@ composer require pithyone/zhihu-crawler
 $app = new \ZhihuCrawler\App();
 ```
 
-Answer Model:
+### 收藏夹
 
 ```php
-$app->answer->getList($questionId);
+$collection = $app->collection->extract($id);
+
+$collection->getTitle();
+
+$collection->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $extractor) {
+    return [
+        'question_title' => $extractor->getQuestionTitle(),
+        'vote_count' => $extractor->getVoteCount(),
+        'author' => $extractor->getAuthor(),
+        'author_bio' => $extractor->getAuthorBio(),
+        'author_link' => $extractor->getAuthorLink(),
+        'summary' => $extractor->getSummary(),
+        'link' => $extractor->getLink()
+    ];
+});
 ```
 
-Collection Model:
+### 本月最热
 
 ```php
-$app->collection->get($id);
+$monthlyHot = $app->monthlyHot->extract();
+
+$monthlyHot->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $extractor) {
+    return [
+        'question_title' => $extractor->getQuestionTitle(),
+        'vote_count' => $extractor->getVoteCount(),
+        'author' => $extractor->getAuthor(),
+        'author_bio' => $extractor->getAuthorBio(),
+        'author_link' => $extractor->getAuthorLink(),
+        'summary' => $extractor->getSummary(),
+        'link' => $extractor->getLink()
+    ];
+});
 ```
 
-MonthlyHot Model:
+### 问题
 
 ```php
-$app->monthlyHot->getList();
+$question = $app->question->extract($id);
+
+$question->getTitle();
+
+$question->getDetail();
+
+$question->getAnswerCount();
 ```
 
-Question Model:
+### 回答
 
 ```php
-$app->question->get($id);
+$questionAnswer = $app->questionAnswer->extract($questionId);
+
+$questionAnswer->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $extractor) {
+    return [
+        'author' => $extractor->getAuthor(),
+        'author_bio' => $extractor->getAuthorBio(),
+        'author_link' => $extractor->getAuthorLink(),
+        'vote_count' => $extractor->getVoteCount(),
+        'summary' => $extractor->getSummary(),
+        'link' => $extractor->getLink(),
+        'image_list' => $extractor->getImageList()
+    ];
+});
 ```
+
+## License
+
+[MIT](https://github.com/pithyone/zhihu-crawler/blob/master/LICENSE)

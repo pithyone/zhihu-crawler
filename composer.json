@@ -6,11 +6,11 @@
     "require": {
         "php": ">=5.5.0",
         "fabpot/goutte": "^3.2",
-        "symfony/dependency-injection": "^2.8"
+        "symfony/dependency-injection": "^2.8 || ^3.4 || ^4.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
-        "mockery/mockery": "^0.9"
+        "mockery/mockery": "^0.9 || ^1.1"
     },
     "autoload": {
         "psr-4": {

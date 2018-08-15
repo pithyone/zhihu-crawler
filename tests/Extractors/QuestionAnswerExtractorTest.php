@@ -4,10 +4,10 @@ namespace ZhihuCrawler\Tests\Extractors;
 
 use Symfony\Component\DomCrawler\Crawler;
 use ZhihuCrawler\Extractors\AnswerExtractor;
-use ZhihuCrawler\Extractors\MonthlyHotExtractor;
+use ZhihuCrawler\Extractors\QuestionAnswerExtractor;
 use ZhihuCrawler\Tests\TestCase;
 
-class MonthlyHotExtractorTest extends TestCase
+class QuestionAnswerExtractorTest extends TestCase
 {
     /**
      * @return void
@@ -16,20 +16,20 @@ class MonthlyHotExtractorTest extends TestCase
     {
         $crawler = \Mockery::mock(Crawler::class);
 
-        $monthlyHotExtractor = new MonthlyHotExtractor($crawler, \Mockery::mock(AnswerExtractor::class));
+        $questionAnswerExtractor = new QuestionAnswerExtractor($crawler, \Mockery::mock(AnswerExtractor::class));
 
         $crawler->shouldReceive('filter')
             ->once()
-            ->with('.feed-item')
+            ->with('div[tabindex="-1"]')
             ->andReturnSelf();
 
         $crawler->shouldReceive('each')
             ->once()
-            ->andReturn(['item']);
+            ->andReturn(['answer']);
 
-        $monthlyHotExtractor->setCrawler($crawler);
+        $questionAnswerExtractor->setCrawler($crawler);
 
-        $this->assertEquals(['item'], $monthlyHotExtractor->getList(function () {
+        $this->assertEquals(['answer'], $questionAnswerExtractor->getList(function () {
             return true;
         }));
     }

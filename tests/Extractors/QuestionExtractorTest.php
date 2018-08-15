@@ -4,6 +4,7 @@ namespace ZhihuCrawler\Tests\Extractors;
 
 use Mockery\MockInterface;
 use Symfony\Component\DomCrawler\Crawler;
+use ZhihuCrawler\Extractors\AnswerExtractor;
 use ZhihuCrawler\Extractors\QuestionExtractor;
 use ZhihuCrawler\Tests\TestCase;
 
@@ -26,9 +27,9 @@ class QuestionExtractorTest extends TestCase
     {
         parent::setUp();
 
-        $this->questionExtractor = new QuestionExtractor();
-
         $this->crawler = \Mockery::mock(Crawler::class);
+
+        $this->questionExtractor = new QuestionExtractor($this->crawler, \Mockery::mock(AnswerExtractor::class));
     }
 
     /**
@@ -102,42 +103,5 @@ class QuestionExtractorTest extends TestCase
         $this->questionExtractor->setCrawler($this->crawler);
 
         $this->assertSame(0, $this->questionExtractor->getAnswerCount());
-    }
-
-    /**
-     * @return void
-     */
-    public function testGetAnswerList()
-    {
-        $this->crawler->shouldReceive('filter')
-            ->once()
-            ->with('div[tabindex="-1"]')
-            ->andReturnSelf();
-
-        $this->crawler->shouldReceive('each')
-            ->once()
-            ->andReturn(['answer']);
-
-        $this->questionExtractor->setCrawler($this->crawler);
-
-        $this->assertEquals(['answer'], $this->questionExtractor->getAnswerList());
-    }
-
-    /**
-     * @return void
-     */
-    public function testToArray()
-    {
-        $questionExtractor = \Mockery::mock(QuestionExtractor::class)->makePartial();
-
-        $questionExtractor->shouldReceive('getTitle')->andReturn('title');
-        $questionExtractor->shouldReceive('getDetail')->andReturn('detail');
-        $questionExtractor->shouldReceive('getAnswerCount')->andReturn(0);
-
-        $this->assertSame([
-            'title' => 'title',
-            'detail' => 'detail',
-            'answer_count' => 0
-        ], $questionExtractor->toArray());
     }
 }

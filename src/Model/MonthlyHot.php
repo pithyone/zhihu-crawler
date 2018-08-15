@@ -2,12 +2,15 @@
 
 namespace ZhihuCrawler\Model;
 
+use Goutte\Client;
 use ZhihuCrawler\Extractors\MonthlyHotExtractor;
-use ZhihuCrawler\Traits\ClientTrait;
 
 class MonthlyHot
 {
-    use ClientTrait;
+    /**
+     * @var Client
+     */
+    protected $client;
 
     /**
      * @var MonthlyHotExtractor
@@ -15,22 +18,24 @@ class MonthlyHot
     protected $monthlyHotExtractor;
 
     /**
+     * @param Client $client
      * @param MonthlyHotExtractor $monthlyHotExtractor
      */
-    public function __construct(MonthlyHotExtractor $monthlyHotExtractor)
+    public function __construct(Client $client, MonthlyHotExtractor $monthlyHotExtractor)
     {
+        $this->client = $client;
         $this->monthlyHotExtractor = $monthlyHotExtractor;
     }
 
     /**
-     * @return array
+     * @return MonthlyHotExtractor
      */
-    public function getList()
+    public function extract()
     {
         $crawler = $this->client->request('GET', 'https://www.zhihu.com/node/ExploreAnswerListV2?params=' . urlencode('{"offset":0,"type":"month"}'));
 
         $this->monthlyHotExtractor->setCrawler($crawler);
 
-        return $this->monthlyHotExtractor->getList();
+        return $this->monthlyHotExtractor;
     }
 }

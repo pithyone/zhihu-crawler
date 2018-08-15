@@ -12,7 +12,7 @@ class QuestionTest extends TestCase
     /**
      * @return void
      */
-    public function testGet()
+    public function testExtract()
     {
         $client = \Mockery::mock(Client::class);
 
@@ -26,15 +26,8 @@ class QuestionTest extends TestCase
             ->once()
             ->andReturnSelf();
 
-        $questionExtractor->shouldReceive('toArray')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(['foo' => 'bar']);
+        $question = new Question($client, $questionExtractor);
 
-        $question = new Question($questionExtractor);
-
-        $question->setClient($client);
-
-        $this->assertEquals(['foo' => 'bar'], $question->get(0));
+        $this->assertInstanceOf(QuestionExtractor::class, $question->extract(0));
     }
 }

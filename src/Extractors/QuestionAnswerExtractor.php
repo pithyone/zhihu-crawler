@@ -4,7 +4,7 @@ namespace ZhihuCrawler\Extractors;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-class MonthlyHotExtractor extends Extractor
+class QuestionAnswerExtractor extends Extractor
 {
     /**
      * @param callable $fn
@@ -12,11 +12,8 @@ class MonthlyHotExtractor extends Extractor
      */
     public function getList(callable $fn)
     {
-        return $this->crawler->filter('.feed-item')->each(function (Crawler $node) use ($fn) {
-            $title = $node->filter('.question_link')->text();
-
+        return $this->crawler->filter('div[tabindex="-1"]')->each(function (Crawler $node) use ($fn) {
             $this->answerExtractor->setCrawler($node);
-            $this->answerExtractor->setQuestionTitle($title);
 
             return $fn($this->answerExtractor);
         });

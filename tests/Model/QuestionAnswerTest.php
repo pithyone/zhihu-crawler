@@ -4,16 +4,16 @@ namespace ZhihuCrawler\Tests\Model;
 
 use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
-use ZhihuCrawler\Extractors\QuestionExtractor;
-use ZhihuCrawler\Model\Answer;
+use ZhihuCrawler\Extractors\QuestionAnswerExtractor;
+use ZhihuCrawler\Model\QuestionAnswer;
 use ZhihuCrawler\Tests\TestCase;
 
-class AnswerTest extends TestCase
+class QuestionAnswerTest extends TestCase
 {
     /**
      * @return void
      */
-    public function testGetList()
+    public function testExtract()
     {
         $response = \Mockery::mock();
 
@@ -44,23 +44,15 @@ class AnswerTest extends TestCase
             ->once()
             ->with('foobarfoobar');
 
-        $questionExtractor = \Mockery::mock(QuestionExtractor::class);
+        $questionAnswerExtractor = \Mockery::mock(QuestionAnswerExtractor::class);
 
-        $questionExtractor->shouldReceive('setCrawler')
+        $questionAnswerExtractor->shouldReceive('setCrawler')
             ->once()
             ->with($crawler)
             ->andReturnSelf();
 
-        $questionExtractor->shouldReceive('getAnswerList')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(['item']);
+        $questionAnswer = new QuestionAnswer($client, $crawler, $questionAnswerExtractor);
 
-        $answer = new Answer($questionExtractor);
-
-        $answer->setClient($client);
-        $answer->setCrawler($crawler);
-
-        $this->assertEquals(['item'], $answer->getList(0, 15));
+        $this->assertInstanceOf(QuestionAnswerExtractor::class, $questionAnswer->extract(0, 15));
     }
 }

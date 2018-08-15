@@ -3,13 +3,9 @@
 namespace ZhihuCrawler\Extractors;
 
 use Symfony\Component\DomCrawler\Crawler;
-use ZhihuCrawler\Traits\AnswerExtractorTrait;
-use ZhihuCrawler\Traits\CrawlerTrait;
 
-class CollectionExtractor
+class CollectionExtractor extends Extractor
 {
-    use CrawlerTrait, AnswerExtractorTrait;
-
     /**
      * @return string
      */
@@ -19,27 +15,18 @@ class CollectionExtractor
     }
 
     /**
+     * @param callable $fn
      * @return array
      */
-    public function getList()
+    public function getList(callable $fn)
     {
-        return $this->crawler->filter('div[class="zm-item"]')->each(function (Crawler $node) {
+        return $this->crawler->filter('div[class="zm-item"]')->each(function (Crawler $node) use ($fn) {
+            $title = $node->filter('.zm-item-title')->text();
+
             $this->answerExtractor->setCrawler($node);
+            $this->answerExtractor->setQuestionTitle($title);
 
-            return array_merge([
-                'title' => $node->filter('.zm-item-title')->text()
-            ], $this->answerExtractor->toArray());
+            return $fn($this->answerExtractor);
         });
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return [
-            'title' => $this->getTitle(),
-            'list' => $this->getList()
-        ];
     }
 }

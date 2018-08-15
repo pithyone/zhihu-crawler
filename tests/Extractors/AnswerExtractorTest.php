@@ -26,9 +26,9 @@ class AnswerExtractorTest extends TestCase
     {
         parent::setUp();
 
-        $this->answerExtractor = new AnswerExtractor();
-
         $this->crawler = \Mockery::mock(Crawler::class);
+
+        $this->answerExtractor = new AnswerExtractor($this->crawler);
     }
 
     /**
@@ -224,29 +224,5 @@ class AnswerExtractorTest extends TestCase
         $this->answerExtractor->setCrawler($this->crawler);
 
         $this->assertSame(0, $this->answerExtractor->getVoteCount());
-    }
-
-    /**
-     * @return void
-     */
-    public function testToArray()
-    {
-        $answerExtractor = \Mockery::mock(AnswerExtractor::class)->makePartial();
-
-        $answerExtractor->shouldReceive('getAuthor')->andReturn('author');
-        $answerExtractor->shouldReceive('getAuthorBio')->andReturn('author_bio');
-        $answerExtractor->shouldReceive('getAuthorLink')->andReturn('author_link');
-        $answerExtractor->shouldReceive('getSummary')->andReturn('summary');
-        $answerExtractor->shouldReceive('getLink')->andReturn('link');
-        $answerExtractor->shouldReceive('getVoteCount')->andReturn(0);
-
-        $this->assertSame([
-            'author' => 'author',
-            'author_bio' => 'author_bio',
-            'author_link' => 'author_link',
-            'summary' => 'summary',
-            'link' => 'link',
-            'vote_count' => 0
-        ], $answerExtractor->toArray());
     }
 }

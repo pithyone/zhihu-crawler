@@ -12,7 +12,7 @@ class MonthlyHotTest extends TestCase
     /**
      * @return void
      */
-    public function testGetList()
+    public function testExtract()
     {
         $client = \Mockery::mock(Client::class);
 
@@ -26,15 +26,8 @@ class MonthlyHotTest extends TestCase
             ->once()
             ->andReturnSelf();
 
-        $monthlyHotExtractor->shouldReceive('getList')
-            ->once()
-            ->withNoArgs()
-            ->andReturn(['item']);
+        $monthlyHot = new MonthlyHot($client, $monthlyHotExtractor);
 
-        $monthlyHot = new MonthlyHot($monthlyHotExtractor);
-
-        $monthlyHot->setClient($client);
-
-        $this->assertEquals(['item'], $monthlyHot->getList());
+        $this->assertInstanceOf(MonthlyHotExtractor::class, $monthlyHot->extract());
     }
 }

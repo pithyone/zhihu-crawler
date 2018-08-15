@@ -2,12 +2,15 @@
 
 namespace ZhihuCrawler\Model;
 
+use Goutte\Client;
 use ZhihuCrawler\Extractors\QuestionExtractor;
-use ZhihuCrawler\Traits\ClientTrait;
 
 class Question
 {
-    use ClientTrait;
+    /**
+     * @var Client
+     */
+    protected $client;
 
     /**
      * @var QuestionExtractor
@@ -15,23 +18,25 @@ class Question
     protected $questionExtractor;
 
     /**
+     * @param Client $client
      * @param QuestionExtractor $questionExtractor
      */
-    public function __construct(QuestionExtractor $questionExtractor)
+    public function __construct(Client $client, QuestionExtractor $questionExtractor)
     {
+        $this->client = $client;
         $this->questionExtractor = $questionExtractor;
     }
 
     /**
      * @param int $id
-     * @return array
+     * @return QuestionExtractor
      */
-    public function get($id)
+    public function extract($id)
     {
         $crawler = $this->client->request('GET', 'https://www.zhihu.com/question/' . $id);
 
         $this->questionExtractor->setCrawler($crawler);
 
-        return $this->questionExtractor->toArray();
+        return $this->questionExtractor;
     }
 }
