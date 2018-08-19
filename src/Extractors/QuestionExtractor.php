@@ -5,6 +5,14 @@ namespace ZhihuCrawler\Extractors;
 class QuestionExtractor extends Extractor
 {
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return (int)pathinfo($this->crawler->getUri())['basename'];
+    }
+
+    /**
      * @return string
      */
     public function getTitle()

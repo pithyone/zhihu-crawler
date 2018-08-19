@@ -62,6 +62,8 @@ $monthlyHot->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $extract
 ```php
 $question = $app->question->extract($id);
 
+$question->getId();
+
 $question->getTitle();
 
 $question->getDetail();
