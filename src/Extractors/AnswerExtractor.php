@@ -25,6 +25,14 @@ class AnswerExtractor
     }
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return (int)pathinfo($this->getLink())['basename'];
+    }
+
+    /**
      * @return string
      */
     public function getAuthor()
