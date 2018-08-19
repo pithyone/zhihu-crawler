@@ -43,18 +43,65 @@ class AnswerExtractorTest extends TestCase
     }
 
     /**
-     * @return void
+     * @throws \ReflectionException
      */
-    public function testGetId()
+    public function testGetLinkPath()
     {
         $answerExtractor = \Mockery::mock(AnswerExtractor::class . '[getLink]', [$this->crawler]);
 
         $answerExtractor->shouldReceive('getLink')
-            ->once()
+            ->twice()
             ->withNoArgs()
-            ->andReturn('https://www.zhihu.com/question/0/answer/1');
+            ->andReturn('https://www.zhihu.com/question/foo/answer/bar');
 
-        $this->assertEquals(1, $answerExtractor->getId());
+        $this->assertEquals('foo', $this->callMethod($answerExtractor, 'getLinkPath', ['question']));
+        $this->assertEquals('bar', $this->callMethod($answerExtractor, 'getLinkPath', ['answer']));
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function testGetLinkPathException()
+    {
+        $answerExtractor = \Mockery::mock(AnswerExtractor::class . '[getLink]', [$this->crawler]);
+
+        $answerExtractor->shouldReceive('getLink')
+            ->twice()
+            ->withNoArgs()
+            ->andReturn('https://zhuanlan.zhihu.com/p/foo');
+
+        $this->assertEquals('', $this->callMethod($answerExtractor, 'getLinkPath', ['question']));
+        $this->assertEquals('', $this->callMethod($answerExtractor, 'getLinkPath', ['answer']));
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetId()
+    {
+        $answerExtractor = \Mockery::mock(AnswerExtractor::class . '[getLinkPath]', [$this->crawler])->shouldAllowMockingProtectedMethods();
+
+        $answerExtractor->shouldReceive('getLinkPath')
+            ->once()
+            ->with('answer')
+            ->andReturn('12345678');
+
+        $this->assertEquals(12345678, $answerExtractor->getId());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetQuestionId()
+    {
+        $answerExtractor = \Mockery::mock(AnswerExtractor::class . '[getLinkPath]', [$this->crawler])->shouldAllowMockingProtectedMethods();
+
+        $answerExtractor->shouldReceive('getLinkPath')
+            ->once()
+            ->with('question')
+            ->andReturn('12345678');
+
+        $this->assertEquals(12345678, $answerExtractor->getQuestionId());
     }
 
     /**

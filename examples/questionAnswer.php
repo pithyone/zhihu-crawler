@@ -8,6 +8,7 @@ $questionAnswer = $app->questionAnswer->extract(27274812, 15);
 $list = $questionAnswer->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $extractor) {
     return [
         'id' => $extractor->getId(),
+        'question_id' => $extractor->getQuestionId(),
         'author' => $extractor->getAuthor(),
         'author_bio' => $extractor->getAuthorBio(),
         'author_link' => $extractor->getAuthorLink(),

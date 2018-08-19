@@ -29,7 +29,15 @@ class AnswerExtractor
      */
     public function getId()
     {
-        return (int)pathinfo($this->getLink())['basename'];
+        return (int)$this->getLinkPath('answer');
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuestionId()
+    {
+        return (int)$this->getLinkPath('question');
     }
 
     /**
@@ -140,6 +148,23 @@ class AnswerExtractor
             return $url;
         } else {
             return $url ? 'https://www.zhihu.com' . $url : '';
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    protected function getLinkPath($name)
+    {
+        $pattern = '/question\/(.*)\/answer\/(.*)/i';
+
+        preg_match($pattern, $this->getLink(), $matches);
+
+        if (empty($matches)) {
+            return '';
+        } else {
+            return $name === 'question' ? $matches[1] : $matches[2];
         }
     }
 }
