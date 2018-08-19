@@ -42,6 +42,20 @@ class AnswerExtractorTest extends TestCase
         $this->assertEquals('https://zhuanlan.zhihu.com/p/0', $this->callMethod($this->answerExtractor, 'validateUrl', ['https://zhuanlan.zhihu.com/p/0']));
     }
 
+    /**
+     * @return void
+     */
+    public function testGetId()
+    {
+        $answerExtractor = \Mockery::mock(AnswerExtractor::class . '[getLink]', [$this->crawler]);
+
+        $answerExtractor->shouldReceive('getLink')
+            ->once()
+            ->withNoArgs()
+            ->andReturn('https://www.zhihu.com/question/0/answer/1');
+
+        $this->assertEquals(1, $answerExtractor->getId());
+    }
 
     /**
      * @return void
