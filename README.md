@@ -26,6 +26,8 @@ $collection = $app->collection->extract($id);
 
 $collection->getTitle();
 
+$collection->getDescription();
+
 $collection->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $extractor) {
     return [
         'question_title' => $extractor->getQuestionTitle(),

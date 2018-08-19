@@ -55,6 +55,26 @@ class CollectionExtractorTest extends TestCase
     /**
      * @return void
      */
+    public function testGetDescription()
+    {
+        $this->crawler->shouldReceive('filter')
+            ->once()
+            ->with('#zh-fav-head-description')
+            ->andReturnSelf();
+
+        $this->crawler->shouldReceive('text')
+            ->once()
+            ->withNoArgs()
+            ->andReturn('description');
+
+        $this->collectionExtractor->setCrawler($this->crawler);
+
+        $this->assertEquals('description', $this->collectionExtractor->getDescription());
+    }
+
+    /**
+     * @return void
+     */
     public function testGetList()
     {
         $this->crawler->shouldReceive('filter')

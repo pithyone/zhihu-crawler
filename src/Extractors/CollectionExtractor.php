@@ -15,6 +15,14 @@ class CollectionExtractor extends Extractor
     }
 
     /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->crawler->filter('#zh-fav-head-description')->text();
+    }
+
+    /**
      * @param callable $fn
      * @return array
      */

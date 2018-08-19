@@ -7,6 +7,8 @@ $collection = $app->collection->extract(41893350);
 
 var_dump($collection->getTitle());
 
+var_dump($collection->getDescription());
+
 $list = $collection->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $extractor) {
     return [
         'question_title' => $extractor->getQuestionTitle(),
