@@ -35,6 +35,21 @@ class QuestionExtractorTest extends TestCase
     /**
      * @return void
      */
+    public function testGetId()
+    {
+        $this->crawler->shouldReceive('getUri')
+            ->once()
+            ->withNoArgs()
+            ->andReturn('https://www.zhihu.com/question/0');
+
+        $this->questionExtractor->setCrawler($this->crawler);
+
+        $this->assertEquals(0, $this->questionExtractor->getId());
+    }
+
+    /**
+     * @return void
+     */
     public function testGetTitle()
     {
         $this->crawler->shouldReceive('filter')
