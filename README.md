@@ -34,7 +34,8 @@ $collection->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $extract
         'author_bio' => $extractor->getAuthorBio(),
         'author_link' => $extractor->getAuthorLink(),
         'summary' => $extractor->getSummary(),
-        'link' => $extractor->getLink()
+        'link' => $extractor->getLink(),
+        'created' => $extractor->getCreated()
     ];
 });
 ```
@@ -52,7 +53,8 @@ $monthlyHot->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $extract
         'author_bio' => $extractor->getAuthorBio(),
         'author_link' => $extractor->getAuthorLink(),
         'summary' => $extractor->getSummary(),
-        'link' => $extractor->getLink()
+        'link' => $extractor->getLink(),
+        'created' => $extractor->getCreated()
     ];
 });
 ```
@@ -86,7 +88,8 @@ $questionAnswer->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor $ext
         'vote_count' => $extractor->getVoteCount(),
         'summary' => $extractor->getSummary(),
         'link' => $extractor->getLink(),
-        'image_list' => $extractor->getImageList()
+        'image_list' => $extractor->getImageList(),
+        'created' => $extractor->getCreated()
     ];
 });
 ```

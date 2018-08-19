@@ -115,6 +115,14 @@ class AnswerExtractor
     }
 
     /**
+     * @return int
+     */
+    public function getCreated()
+    {
+        return (int)$this->crawler->filter('.zm-item-answer')->attr('data-created');
+    }
+
+    /**
      * @param Crawler $crawler
      */
     public function setCrawler($crawler)

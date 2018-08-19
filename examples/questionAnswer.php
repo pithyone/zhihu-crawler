@@ -15,7 +15,8 @@ $list = $questionAnswer->getList(function (\ZhihuCrawler\Extractors\AnswerExtrac
         'vote_count' => $extractor->getVoteCount(),
         'summary' => $extractor->getSummary(),
         'link' => $extractor->getLink(),
-        'image_list' => $extractor->getImageList()
+        'image_list' => $extractor->getImageList(),
+        'created' => $extractor->getCreated()
     ];
 });
 

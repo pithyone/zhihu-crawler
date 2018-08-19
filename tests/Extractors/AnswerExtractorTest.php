@@ -286,4 +286,24 @@ class AnswerExtractorTest extends TestCase
 
         $this->assertSame(0, $this->answerExtractor->getVoteCount());
     }
+
+    /**
+     * @return void
+     */
+    public function testGetCreated()
+    {
+        $this->crawler->shouldReceive('filter')
+            ->once()
+            ->with('.zm-item-answer')
+            ->andReturnSelf();
+
+        $this->crawler->shouldReceive('attr')
+            ->once()
+            ->with('data-created')
+            ->andReturn('0');
+
+        $this->answerExtractor->setCrawler($this->crawler);
+
+        $this->assertSame(0, $this->answerExtractor->getCreated());
+    }
 }

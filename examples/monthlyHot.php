@@ -13,7 +13,8 @@ $list = $monthlyHot->getList(function (\ZhihuCrawler\Extractors\AnswerExtractor 
         'author_bio' => $extractor->getAuthorBio(),
         'author_link' => $extractor->getAuthorLink(),
         'summary' => $extractor->getSummary(),
-        'link' => $extractor->getLink()
+        'link' => $extractor->getLink(),
+        'created' => $extractor->getCreated()
     ];
 });
 
