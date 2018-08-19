@@ -11,7 +11,7 @@ class CollectionExtractor extends Extractor
      */
     public function getTitle()
     {
-        return $this->crawler->filter('#zh-fav-head-title')->text();
+        return trim($this->crawler->filter('#zh-fav-head-title')->text());
     }
 
     /**
