@@ -95,7 +95,7 @@ class AnswerExtractor
     {
         $summary = $this->crawler->filter('.zh-summary')->text();
 
-        return str_replace('显示全部', '', $summary);
+        return str_replace('显示全部', '', trim($summary));
     }
 
     /**

@@ -16,7 +16,7 @@ class MonthlyHotExtractor extends Extractor
             $title = $node->filter('.question_link')->text();
 
             $this->answerExtractor->setCrawler($node);
-            $this->answerExtractor->setQuestionTitle($title);
+            $this->answerExtractor->setQuestionTitle(trim($title));
 
             return $fn($this->answerExtractor);
         });
