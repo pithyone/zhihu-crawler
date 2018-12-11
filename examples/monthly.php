@@ -2,12 +2,9 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$collection = new \ZhihuCrawler\Collection('41893350');
+$monthly = new \ZhihuCrawler\Monthly();
 
-var_dump($collection->getTitle());
-var_dump($collection->getDetail());
-
-foreach ($collection->getAnswerList() as $answer) {
+foreach ($monthly->getAnswerList() as $answer) {
     var_dump($answer->getTitle());
     var_dump($answer->getLink());
     var_dump($answer->getVoteCount());
