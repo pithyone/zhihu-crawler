@@ -2,7 +2,6 @@
 
 namespace ZhihuCrawler\Tests;
 
-use PHPUnit\Framework\TestCase;
 use ZhihuCrawler\Crawler;
 
 class CrawlerTest extends TestCase
