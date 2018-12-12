@@ -15,7 +15,7 @@ class AnswerTest extends TestCase
     {
         parent::setUp();
 
-        $this->crawler = $this->createMock(ZhihuCrawler::class);
+        $this->crawler = $this->createMockCopy(ZhihuCrawler::class);
     }
 
     public function testConstructAndGet()

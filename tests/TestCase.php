@@ -3,7 +3,6 @@
 namespace ZhihuCrawler\Tests;
 
 use Goutte\Client;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\BrowserKit\Response;
 use ZhihuCrawler\Collection;
 use ZhihuCrawler\Question;
@@ -12,10 +11,10 @@ class TestCase extends \PHPUnit\Framework\TestCase
 {
     protected function getClient($status = 200)
     {
-        $response = $this->createMock(Response::class);
+        $response = $this->createMockCopy(Response::class);
         $response->method('getStatus')->willReturn($status);
 
-        $client = $this->createMock(Client::class);
+        $client = $this->createMockCopy(Client::class);
         $client->method('getInternalResponse')->willReturn($response);
 
         return $client;
@@ -57,10 +56,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $stub;
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function createMock($originalClassName): MockObject
+    protected function createMockCopy($originalClassName)
     {
         if (is_callable('parent::createMock')) {
             return parent::createMock($originalClassName);

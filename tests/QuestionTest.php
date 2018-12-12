@@ -14,7 +14,7 @@ class QuestionTest extends TestCase
     {
         parent::setUp();
 
-        $this->crawler = $this->createMock(Crawler::class);
+        $this->crawler = $this->createMockCopy(Crawler::class);
     }
 
     public function testGetTitle()
@@ -39,10 +39,10 @@ class QuestionTest extends TestCase
 
     public function testGetAnswerList()
     {
-        $response = $this->createMock(ResponseInterface::class);
+        $response = $this->createMockCopy(ResponseInterface::class);
         $response->expects($this->once())->method('getBody')->willReturn('{"msg":["foo","bar"]}');
 
-        $guzzle = $this->createMock(\GuzzleHttp\Client::class);
+        $guzzle = $this->createMockCopy(\GuzzleHttp\Client::class);
         $guzzle->expects($this->once())->method($this->anything())->with('post', $this->equalTo(['https://www.zhihu.com/node/QuestionAnswerListV2', ['form_params' => ['method' => 'next', 'params' => '{"url_token":"id","pagesize":10,"offset":0}']]]))->willReturn($response);
 
         $client = $this->getClient();
