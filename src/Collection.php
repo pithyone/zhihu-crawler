@@ -27,7 +27,7 @@ class Collection extends AbstractExtractor
      */
     public function getTitle()
     {
-        return trim($this->crawler->filter('#zh-fav-head-title')->text());
+        return $this->crawler->filter('#zh-fav-head-title')->text();
     }
 
     /**
@@ -52,7 +52,7 @@ class Collection extends AbstractExtractor
      */
     protected function extractAnswerList()
     {
-        return $this->crawler->filter('div[class="zm-item"]')->each(function (Crawler $node) {
+        return $this->crawler->filter('div[class="zm-item"]')->each(function (ZhihuCrawler $node) {
             $title = $node->filter('.zm-item-title')->text();
 
             return new Answer($node, $title);
