@@ -35,11 +35,7 @@ class Question extends AbstractExtractor
      */
     public function getDetail()
     {
-        try {
-            return $this->crawler->filter('.QuestionHeader-detail span')->text();
-        } catch (\InvalidArgumentException $e) {
-            return '';
-        }
+        return $this->crawler->filter('.QuestionHeader-detail span')->text();
     }
 
     /**
@@ -96,6 +92,6 @@ class Question extends AbstractExtractor
      */
     protected function createAnswer($html, $title)
     {
-        return new Answer($html, $title);
+        return new Answer(new ZhihuCrawler($html), $title);
     }
 }

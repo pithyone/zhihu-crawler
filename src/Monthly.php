@@ -22,8 +22,8 @@ class Monthly extends AbstractExtractor
      */
     protected function extractAnswerList()
     {
-        return $this->crawler->filter('.feed-item')->each(function (Crawler $node) {
-            $title = trim($node->filter('.question_link')->text());
+        return $this->crawler->filter('.feed-item')->each(function (ZhihuCrawler $node) {
+            $title = $node->filter('.question_link')->text();
 
             return new Answer($node, $title);
         });
