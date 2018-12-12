@@ -9,7 +9,7 @@ class ZhihuCrawlerTest extends TestCase
 {
     public function testCreateFromCrawler()
     {
-        $this->assertInstanceOf(ZhihuCrawler::class, ZhihuCrawler::createFromCrawler($this->createMock(Crawler::class)));
+        $this->assertInstanceOf(ZhihuCrawler::class, ZhihuCrawler::createFromCrawler($this->createMockCopy(Crawler::class)));
     }
 
     public function testAttr()

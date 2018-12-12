@@ -9,7 +9,7 @@ class MonthlyTest extends TestCase
 {
     public function testGetAnswerList()
     {
-        $crawler = $this->createMock(Crawler::class);
+        $crawler = $this->createMockCopy(Crawler::class);
         $crawler->expects($this->once())->method('filter')->with($this->equalTo('.feed-item'))->willReturnSelf();
         $crawler->expects($this->once())->method('each')->willReturn(['answer']);
 

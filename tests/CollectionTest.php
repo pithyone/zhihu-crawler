@@ -12,7 +12,7 @@ class CollectionTest extends TestCase
     {
         parent::setUp();
 
-        $this->crawler = $this->createMock(Crawler::class);
+        $this->crawler = $this->createMockCopy(Crawler::class);
     }
 
     public function testGetTitle()
