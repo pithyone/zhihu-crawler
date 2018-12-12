@@ -14,26 +14,20 @@ class MonthlyTest extends TestCase
         $crawler->expects($this->once())->method('each')->willReturn(['answer']);
 
         $client = $this->getClient();
-        $client->expects($this->exactly(2))
+        $client->expects($this->once())
             ->method('request')
-            ->withConsecutive([
-                $this->equalTo('GET'),
-                $this->equalTo('https://www.zhihu.com/node/ExploreAnswerListV2?params=%7B%22offset%22%3A0%2C%22type%22%3A%22month%22%7D')
-            ], [
-                $this->equalTo('GET'),
-                $this->equalTo('https://www.zhihu.com/node/ExploreAnswerListV2?params=%7B%22offset%22%3A5%2C%22type%22%3A%22month%22%7D')
-            ])
-            ->willReturn($crawler);
+            ->with($this->equalTo('GET'), $this->equalTo('https://www.zhihu.com/node/ExploreAnswerListV2?params=%7B%22offset%22%3A0%2C%22type%22%3A%22month%22%7D'));
 
         $stub = $this->getMockBuilder(Monthly::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createClient'])
+            ->setMethods(['createClient', 'createZhihuCrawler'])
             ->getMock();
 
         $stub->expects($this->once())->method('createClient')->willReturn($client);
+        $stub->expects($this->once())->method('createZhihuCrawler')->willReturn($crawler);
 
         $stub->__construct();
 
-        $this->assertEquals(['answer'], $stub->getAnswerList(2));
+        $this->assertEquals(['answer'], $stub->getAnswerList());
     }
 }

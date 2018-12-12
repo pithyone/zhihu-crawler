@@ -4,7 +4,6 @@ namespace ZhihuCrawler\Tests;
 
 use Goutte\Client;
 use Symfony\Component\BrowserKit\Response;
-use ZhihuCrawler\Answer;
 use ZhihuCrawler\Collection;
 use ZhihuCrawler\Question;
 
@@ -21,31 +20,18 @@ class TestCase extends \PHPUnit\Framework\TestCase
         return $client;
     }
 
-    protected function createAnswer($crawler)
-    {
-        $stub = $this->getMockBuilder(Answer::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createCrawler'])
-            ->getMock();
-
-        $stub->expects($this->once())->method('createCrawler')->willReturn($crawler);
-
-        $stub->__construct('string', 'title');
-
-        return $stub;
-    }
-
     protected function createCollection($crawler)
     {
         $client = $this->getClient();
-        $client->expects($this->once())->method('request')->with($this->equalTo('GET'), $this->equalTo("https://www.zhihu.com/collection/id?page=1"))->willReturn($crawler);
+        $client->expects($this->once())->method('request')->with($this->equalTo('GET'), $this->equalTo("https://www.zhihu.com/collection/id?page=1"));
 
         $stub = $this->getMockBuilder(Collection::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createClient'])
+            ->setMethods(['createClient', 'createZhihuCrawler'])
             ->getMock();
 
         $stub->expects($this->once())->method('createClient')->willReturn($client);
+        $stub->expects($this->once())->method('createZhihuCrawler')->willReturn($crawler);
 
         $stub->__construct('id');
 
@@ -55,14 +41,15 @@ class TestCase extends \PHPUnit\Framework\TestCase
     protected function createQuestion($crawler)
     {
         $client = $this->getClient();
-        $client->expects($this->once())->method('request')->with($this->equalTo('GET'), $this->equalTo('https://www.zhihu.com/question/id'))->willReturn($crawler);
+        $client->expects($this->once())->method('request')->with($this->equalTo('GET'), $this->equalTo('https://www.zhihu.com/question/id'));
 
         $stub = $this->getMockBuilder(Question::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createClient'])
+            ->setMethods(['createClient', 'createZhihuCrawler'])
             ->getMock();
 
         $stub->expects($this->once())->method('createClient')->willReturn($client);
+        $stub->expects($this->once())->method('createZhihuCrawler')->willReturn($crawler);
 
         $stub->__construct('id');
 

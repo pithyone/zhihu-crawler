@@ -6,19 +6,6 @@ use ZhihuCrawler\AbstractExtractor;
 
 class AbstractExtractorTest extends TestCase
 {
-    public function testConstruct()
-    {
-        $stub = $this->getMockBuilder(AbstractExtractor::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['createClient'])
-            ->getMockForAbstractClass();
-
-        $stub->expects($this->once())->method('createClient')->willReturn($this->getClient());
-        $stub->expects($this->once())->method('makeRequest')->with($this->equalTo(1));
-
-        $stub->__construct();
-    }
-
     /**
      * @expectedException \ZhihuCrawler\NotFoundException
      */
@@ -26,10 +13,12 @@ class AbstractExtractorTest extends TestCase
     {
         $stub = $this->getMockBuilder(AbstractExtractor::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createClient'])
+            ->setMethods(['createClient', 'createZhihuCrawler'])
             ->getMockForAbstractClass();
 
         $stub->expects($this->once())->method('createClient')->willReturn($this->getClient(404));
+        $stub->expects($this->once())->method('makeRequest')->with($this->equalTo(1));
+        $stub->expects($this->once())->method('createZhihuCrawler');
 
         $stub->__construct();
     }
@@ -49,9 +38,11 @@ class AbstractExtractorTest extends TestCase
     {
         $stub = $this->getMockBuilder(AbstractExtractor::class)
             ->disableOriginalConstructor()
+            ->setMethods(['createZhihuCrawler'])
             ->getMockForAbstractClass();
 
-        $stub->expects($this->once())->method('makeRequest')->withConsecutive($this->equalTo(2));
+        $stub->expects($this->once())->method('makeRequest')->with($this->equalTo(2));
+        $stub->expects($this->once())->method('createZhihuCrawler');
 
         $stub->getAnswerList(2);
     }
