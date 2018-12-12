@@ -29,7 +29,7 @@ abstract class AbstractExtractor
     {
         $this->client = $this->createClient();
 
-        $this->crawler = $this->createZhihuCrawler();
+        $this->crawler = $this->createCrawler();
 
         if ($this->client->getInternalResponse()->getStatus() !== 200) {
             throw new NotFoundException();
@@ -44,7 +44,7 @@ abstract class AbstractExtractor
     {
         if ($this->page !== $page) {
             $this->page = $page;
-            $this->crawler = $this->createZhihuCrawler();
+            $this->crawler = $this->createCrawler();
         }
 
         return $this->extractAnswerList();
@@ -59,11 +59,12 @@ abstract class AbstractExtractor
     }
 
     /**
+     * @param Crawler $crawler
      * @return ZhihuCrawler
      */
-    protected function createZhihuCrawler()
+    protected function createZhihuCrawler($crawler)
     {
-        return ZhihuCrawler::createFromCrawler($this->makeRequest($this->page));
+        return ZhihuCrawler::createFromCrawler($crawler);
     }
 
     /**
@@ -76,4 +77,14 @@ abstract class AbstractExtractor
      * @return array
      */
     abstract protected function extractAnswerList();
+
+    /**
+     * @return ZhihuCrawler
+     */
+    private function createCrawler()
+    {
+        $crawler = $this->makeRequest($this->page);
+
+        return $this->createZhihuCrawler($crawler);
+    }
 }
