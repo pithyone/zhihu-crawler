@@ -29,13 +29,12 @@ class QuestionTest extends TestCase
 
     public function testGetDetail()
     {
-        $this->crawler->expects($this->exactly(2))->method('filter')->with($this->equalTo('.QuestionHeader-detail span'))->willReturnSelf();
-        $this->crawler->expects($this->exactly(2))->method('text')->willReturnOnConsecutiveCalls('detail', $this->throwException(new \InvalidArgumentException()));
+        $this->crawler->expects($this->once())->method('filter')->with($this->equalTo('.QuestionHeader-detail span'))->willReturnSelf();
+        $this->crawler->expects($this->once())->method('text')->willReturn('detail');
 
         $question = $this->createQuestion($this->crawler);
 
         $this->assertEquals('detail', $question->getDetail());
-        $this->assertEquals('', $question->getDetail());
     }
 
     public function testGetAnswerList()

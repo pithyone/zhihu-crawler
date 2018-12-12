@@ -18,7 +18,7 @@ class CollectionTest extends TestCase
     public function testGetTitle()
     {
         $this->crawler->expects($this->once())->method('filter')->with($this->equalTo('#zh-fav-head-title'))->willReturnSelf();
-        $this->crawler->expects($this->once())->method('text')->willReturn(' title ');
+        $this->crawler->expects($this->once())->method('text')->willReturn('title');
 
         $collection = $this->createCollection($this->crawler);
 
