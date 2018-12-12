@@ -48,7 +48,7 @@ class ZhihuCrawler extends Crawler
     {
         $data = array();
         foreach ($this as $i => $node) {
-            $data[] = $closure(new static($node), $i);
+            $data[] = $closure($this->createSubZhihuCrawler($node), $i);
         }
 
         return $data;
@@ -69,6 +69,15 @@ class ZhihuCrawler extends Crawler
     protected function getParentText()
     {
         return parent::text();
+    }
+
+    /**
+     * @param $node
+     * @return ZhihuCrawler
+     */
+    protected function createSubZhihuCrawler($node)
+    {
+        return new static($node);
     }
 
     /**
