@@ -61,7 +61,6 @@ class QuestionTest extends TestCase
         $stub->__construct('id');
 
         foreach ($stub->getAnswerList() as $answer) {
-            //
         }
     }
 }

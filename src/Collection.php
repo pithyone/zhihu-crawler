@@ -13,6 +13,7 @@ class Collection extends AbstractExtractor
 
     /**
      * @param string $id
+     *
      * @throws NotFoundException
      */
     public function __construct($id)
@@ -40,6 +41,7 @@ class Collection extends AbstractExtractor
 
     /**
      * @param int $page
+     *
      * @return Crawler
      */
     protected function makeRequest($page)

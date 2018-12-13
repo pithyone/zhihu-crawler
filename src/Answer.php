@@ -16,7 +16,7 @@ class Answer implements AnswerInterface
 
     /**
      * @param ZhihuCrawler $crawler
-     * @param string $title
+     * @param string       $title
      */
     public function __construct($crawler, $title)
     {
@@ -45,7 +45,7 @@ class Answer implements AnswerInterface
      */
     public function getVoteCount()
     {
-        return (int)$this->crawler->filter('.zm-item-vote-info')->attr('data-votecount');
+        return (int) $this->crawler->filter('.zm-item-vote-info')->attr('data-votecount');
     }
 
     /**
@@ -99,6 +99,6 @@ class Answer implements AnswerInterface
      */
     public function getCreated()
     {
-        return (int)$this->crawler->filter('.zm-item-answer')->attr('data-created');
+        return (int) $this->crawler->filter('.zm-item-answer')->attr('data-created');
     }
 }
