@@ -23,7 +23,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
     protected function createCollection($crawler)
     {
         $client = $this->getClient();
-        $client->expects($this->once())->method('request')->with($this->equalTo('GET'), $this->equalTo("https://www.zhihu.com/collection/id?page=1"));
+        $client->expects($this->once())->method('request')->with($this->equalTo('GET'), $this->equalTo('https://www.zhihu.com/collection/id?page=1'));
 
         $stub = $this->getMockBuilder(Collection::class)
             ->disableOriginalConstructor()

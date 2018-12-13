@@ -8,6 +8,7 @@ class ZhihuCrawler extends Crawler
 {
     /**
      * @param Crawler $crawler
+     *
      * @return ZhihuCrawler
      */
     public static function createFromCrawler(Crawler $crawler)
@@ -16,21 +17,21 @@ class ZhihuCrawler extends Crawler
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attr($attribute)
     {
         try {
             $value = trim($this->getParentAttr($attribute));
 
-            return $attribute === 'href' ? $this->fillUrl($value) : $value;
+            return 'href' === $attribute ? $this->fillUrl($value) : $value;
         } catch (\InvalidArgumentException $e) {
             return '';
         }
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function text()
     {
@@ -42,7 +43,7 @@ class ZhihuCrawler extends Crawler
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function each(\Closure $closure)
     {
@@ -56,6 +57,7 @@ class ZhihuCrawler extends Crawler
 
     /**
      * @param $attribute
+     *
      * @return string|null
      */
     protected function getParentAttr($attribute)
@@ -73,6 +75,7 @@ class ZhihuCrawler extends Crawler
 
     /**
      * @param $node
+     *
      * @return ZhihuCrawler
      */
     protected function createSubZhihuCrawler($node)
@@ -82,12 +85,13 @@ class ZhihuCrawler extends Crawler
 
     /**
      * @param string $url
+     *
      * @return string
      */
     private function fillUrl($url)
     {
         $component = parse_url($url);
 
-        return (isset($component['scheme']) ? '' : 'https://www.zhihu.com') . $url;
+        return (isset($component['scheme']) ? '' : 'https://www.zhihu.com').$url;
     }
 }

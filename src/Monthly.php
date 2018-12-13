@@ -8,13 +8,14 @@ class Monthly extends AbstractExtractor
 {
     /**
      * @param int $page
+     *
      * @return Crawler
      */
     protected function makeRequest($page)
     {
-        $params = urlencode('{"offset":' . (($page - 1) * 5) . ',"type":"month"}');
+        $params = urlencode('{"offset":'.(($page - 1) * 5).',"type":"month"}');
 
-        return $this->client->request('GET', 'https://www.zhihu.com/node/ExploreAnswerListV2?params=' . $params);
+        return $this->client->request('GET', 'https://www.zhihu.com/node/ExploreAnswerListV2?params='.$params);
     }
 
     /**

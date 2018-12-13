@@ -13,6 +13,7 @@ class Question extends AbstractExtractor
 
     /**
      * @param string $id
+     *
      * @throws NotFoundException
      */
     public function __construct($id)
@@ -43,11 +44,12 @@ class Question extends AbstractExtractor
      */
     public function getAnswerCount()
     {
-        return (int)$this->crawler->filter('meta[itemProp="answerCount"]')->attr('content');
+        return (int) $this->crawler->filter('meta[itemProp="answerCount"]')->attr('content');
     }
 
     /**
      * @param int $page
+     *
      * @return \Generator
      */
     public function getAnswerList($page = 1)
@@ -56,10 +58,10 @@ class Question extends AbstractExtractor
             'form_params' => [
                 'method' => 'next',
                 'params' => json_encode(['url_token' => $this->id, 'pagesize' => 10, 'offset' => ($page - 1) * 10]),
-            ]
+            ],
         ]);
 
-        $array = json_decode((string)$response->getBody(), true);
+        $array = json_decode((string) $response->getBody(), true);
 
         $title = $this->getTitle();
 
@@ -70,11 +72,12 @@ class Question extends AbstractExtractor
 
     /**
      * @param int $page
+     *
      * @return Crawler
      */
     protected function makeRequest($page)
     {
-        return $this->client->request('GET', 'https://www.zhihu.com/question/' . $this->id);
+        return $this->client->request('GET', 'https://www.zhihu.com/question/'.$this->id);
     }
 
     /**
@@ -88,6 +91,7 @@ class Question extends AbstractExtractor
     /**
      * @param string $html
      * @param string $title
+     *
      * @return Answer
      */
     protected function createAnswer($html, $title)

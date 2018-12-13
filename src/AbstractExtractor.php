@@ -31,13 +31,14 @@ abstract class AbstractExtractor
 
         $this->crawler = $this->createCrawler();
 
-        if ($this->client->getInternalResponse()->getStatus() !== 200) {
+        if (200 !== $this->client->getInternalResponse()->getStatus()) {
             throw new NotFoundException();
         }
     }
 
     /**
      * @param int $page
+     *
      * @return array
      */
     public function getAnswerList($page = 1)
@@ -60,6 +61,7 @@ abstract class AbstractExtractor
 
     /**
      * @param Crawler $crawler
+     *
      * @return ZhihuCrawler
      */
     protected function createZhihuCrawler($crawler)
@@ -69,6 +71,7 @@ abstract class AbstractExtractor
 
     /**
      * @param int $page
+     *
      * @return Crawler
      */
     abstract protected function makeRequest($page);
