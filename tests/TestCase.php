@@ -23,7 +23,10 @@ class TestCase extends \PHPUnit\Framework\TestCase
         if (is_callable([$this, 'createMock'])) {
             return $this->createMock($originalClassName);
         } elseif (is_callable([$this, 'getMock'])) {
-            return $this->getMock($originalClassName);
+            return $this->getMockBuilder($originalClassName)
+                ->disableOriginalConstructor()
+                ->disableOriginalClone()
+                ->getMock();
         } else {
             throw new \InvalidArgumentException();
         }
