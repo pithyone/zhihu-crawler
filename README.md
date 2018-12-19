@@ -3,6 +3,7 @@
 ZhihuCrawler 是一个[知乎](https://www.zhihu.com/)轻量级爬虫，支持问题、收藏夹和本月最热。
 
 [![Build Status](https://travis-ci.org/pithyone/zhihu-crawler.svg?branch=master)](https://travis-ci.org/pithyone/zhihu-crawler)
+[![codecov](https://codecov.io/gh/pithyone/zhihu-crawler/branch/master/graph/badge.svg)](https://codecov.io/gh/pithyone/zhihu-crawler)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.5-8892BF.svg)](https://php.net/)
 [![Latest Stable Version](https://poser.pugx.org/pithyone/zhihu-crawler/v/stable)](https://packagist.org/packages/pithyone/zhihu-crawler)
 [![License](https://poser.pugx.org/pithyone/zhihu-crawler/license)](https://packagist.org/packages/pithyone/zhihu-crawler)
