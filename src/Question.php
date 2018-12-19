@@ -44,7 +44,7 @@ class Question extends AbstractExtractor
      */
     public function getAnswerCount()
     {
-        return (int) $this->crawler->filter('meta[itemProp="answerCount"]')->attr('content');
+        return (int)$this->crawler->filter('meta[itemProp="answerCount"]')->attr('content');
     }
 
     /**
@@ -61,41 +61,37 @@ class Question extends AbstractExtractor
             ],
         ]);
 
-        $array = json_decode((string) $response->getBody(), true);
+        $array = json_decode((string)$response->getBody(), true);
 
         $title = $this->getTitle();
 
         foreach ($array['msg'] as $html) {
-            yield $this->createAnswer($html, $title);
+            yield new Answer(new CrawlerDecorator(new Crawler($html)), $title);
         }
     }
 
     /**
      * @param int $page
-     *
-     * @return Crawler
+     * @return string
      */
-    protected function makeRequest($page)
+    protected function getRequestUri($page)
     {
-        return $this->client->request('GET', 'https://www.zhihu.com/question/'.$this->id);
+        return 'https://www.zhihu.com/question/' . $this->id;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    protected function extractAnswerList()
+    protected function getAnswerListSelector()
     {
-        return [];
+        return '';
     }
 
     /**
-     * @param string $html
-     * @param string $title
-     *
-     * @return Answer
+     * @return string
      */
-    protected function createAnswer($html, $title)
+    protected function getAnswerTitleSelector()
     {
-        return new Answer(new ZhihuCrawler($html), $title);
+        return '';
     }
 }

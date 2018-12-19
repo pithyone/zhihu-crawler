@@ -13,7 +13,7 @@ abstract class AbstractExtractor
     protected $client;
 
     /**
-     * @var ZhihuCrawler
+     * @var CrawlerDecorator
      */
     protected $crawler;
 
@@ -29,7 +29,7 @@ abstract class AbstractExtractor
     {
         $this->client = $this->createClient();
 
-        $this->crawler = $this->createCrawler();
+        $this->setCrawler();
 
         if (200 !== $this->client->getInternalResponse()->getStatus()) {
             throw new NotFoundException();
@@ -45,10 +45,12 @@ abstract class AbstractExtractor
     {
         if ($this->page !== $page) {
             $this->page = $page;
-            $this->crawler = $this->createCrawler();
+            $this->setCrawler();
         }
 
-        return $this->extractAnswerList();
+        $closure = $this->getAnswer();
+
+        return $this->crawler->filter($this->getAnswerListSelector())->each($closure);
     }
 
     /**
@@ -61,33 +63,47 @@ abstract class AbstractExtractor
 
     /**
      * @param Crawler $crawler
-     *
-     * @return ZhihuCrawler
+     * @return CrawlerDecorator
      */
-    protected function createZhihuCrawler($crawler)
+    protected function createCrawler(Crawler $crawler)
     {
-        return ZhihuCrawler::createFromCrawler($crawler);
+        return new CrawlerDecorator($crawler);
     }
 
     /**
      * @param int $page
-     *
-     * @return Crawler
+     * @return string
      */
-    abstract protected function makeRequest($page);
+    abstract protected function getRequestUri($page);
 
     /**
-     * @return array
+     * @return string
      */
-    abstract protected function extractAnswerList();
+    abstract protected function getAnswerListSelector();
 
     /**
-     * @return ZhihuCrawler
+     * @return string
      */
-    private function createCrawler()
+    abstract protected function getAnswerTitleSelector();
+
+    /**
+     * @return void
+     */
+    private function setCrawler()
     {
-        $crawler = $this->makeRequest($this->page);
+        $crawler = $this->client->request('GET', $this->getRequestUri($this->page));
 
-        return $this->createZhihuCrawler($crawler);
+        $this->crawler = $this->createCrawler($crawler);
+    }
+
+    /**
+     * @return \Closure
+     */
+    private function getAnswer()
+    {
+        return function (CrawlerDecorator $node) {
+            $title = $node->filter($this->getAnswerTitleSelector())->text();
+            return new Answer($node, $title);
+        };
     }
 }

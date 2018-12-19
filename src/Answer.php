@@ -5,7 +5,7 @@ namespace ZhihuCrawler;
 class Answer implements AnswerInterface
 {
     /**
-     * @var ZhihuCrawler
+     * @var CrawlerDecorator
      */
     private $crawler;
 
@@ -15,8 +15,8 @@ class Answer implements AnswerInterface
     private $title;
 
     /**
-     * @param ZhihuCrawler $crawler
-     * @param string       $title
+     * @param CrawlerDecorator $crawler
+     * @param string $title
      */
     public function __construct($crawler, $title)
     {
@@ -45,7 +45,7 @@ class Answer implements AnswerInterface
      */
     public function getVoteCount()
     {
-        return (int) $this->crawler->filter('.zm-item-vote-info')->attr('data-votecount');
+        return (int)$this->crawler->filter('.zm-item-vote-info')->attr('data-votecount');
     }
 
     /**
@@ -87,11 +87,11 @@ class Answer implements AnswerInterface
      */
     public function getImageList()
     {
+        $closure = $this->getImageSrc();
+
         return $this->crawler->filter('div[class^="zm-editable-content"]')
             ->filter('noscript img')
-            ->each(function (ZhihuCrawler $node) {
-                return $node->attr('src');
-            });
+            ->each($closure);
     }
 
     /**
@@ -99,6 +99,16 @@ class Answer implements AnswerInterface
      */
     public function getCreated()
     {
-        return (int) $this->crawler->filter('.zm-item-answer')->attr('data-created');
+        return (int)$this->crawler->filter('.zm-item-answer')->attr('data-created');
+    }
+
+    /**
+     * @return \Closure
+     */
+    private function getImageSrc()
+    {
+        return function (CrawlerDecorator $node) {
+            return $node->attr('src');
+        };
     }
 }

@@ -2,8 +2,6 @@
 
 namespace ZhihuCrawler;
 
-use Symfony\Component\DomCrawler\Crawler;
-
 class Collection extends AbstractExtractor
 {
     /**
@@ -41,23 +39,26 @@ class Collection extends AbstractExtractor
 
     /**
      * @param int $page
-     *
-     * @return Crawler
+     * @return string
      */
-    protected function makeRequest($page)
+    protected function getRequestUri($page)
     {
-        return $this->client->request('GET', "https://www.zhihu.com/collection/{$this->id}?page={$page}");
+        return "https://www.zhihu.com/collection/{$this->id}?page={$page}";
     }
 
     /**
-     * @return array
+     * @return string
      */
-    protected function extractAnswerList()
+    protected function getAnswerListSelector()
     {
-        return $this->crawler->filter('div[class="zm-item"]')->each(function (ZhihuCrawler $node) {
-            $title = $node->filter('.zm-item-title')->text();
+        return 'div[class="zm-item"]';
+    }
 
-            return new Answer($node, $title);
-        });
+    /**
+     * @return string
+     */
+    protected function getAnswerTitleSelector()
+    {
+        return '.zm-item-title';
     }
 }

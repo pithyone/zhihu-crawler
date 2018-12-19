@@ -2,31 +2,32 @@
 
 namespace ZhihuCrawler;
 
-use Symfony\Component\DomCrawler\Crawler;
-
 class Monthly extends AbstractExtractor
 {
     /**
      * @param int $page
-     *
-     * @return Crawler
+     * @return string
      */
-    protected function makeRequest($page)
+    protected function getRequestUri($page)
     {
-        $params = urlencode('{"offset":'.(($page - 1) * 5).',"type":"month"}');
+        $params = urlencode('{"offset":' . (($page - 1) * 5) . ',"type":"month"}');
 
-        return $this->client->request('GET', 'https://www.zhihu.com/node/ExploreAnswerListV2?params='.$params);
+        return 'https://www.zhihu.com/node/ExploreAnswerListV2?params=' . $params;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    protected function extractAnswerList()
+    protected function getAnswerListSelector()
     {
-        return $this->crawler->filter('.feed-item')->each(function (ZhihuCrawler $node) {
-            $title = $node->filter('.question_link')->text();
+        return '.feed-item';
+    }
 
-            return new Answer($node, $title);
-        });
+    /**
+     * @return string
+     */
+    protected function getAnswerTitleSelector()
+    {
+        return '.question_link';
     }
 }
