@@ -63,6 +63,7 @@ class CollectionTest extends TestCase
             $node = $this->createCompatibleMock(CrawlerDecorator::class);
             $node->expects($this->once())->method('filter')->with($this->equalTo('.zm-item-title'))->willReturnSelf();
             $node->expects($this->once())->method('text');
+
             return $closure($node) instanceof AnswerInterface;
         }))->willReturn(['answer']);
 

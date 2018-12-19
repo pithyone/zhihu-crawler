@@ -44,7 +44,7 @@ class Question extends AbstractExtractor
      */
     public function getAnswerCount()
     {
-        return (int)$this->crawler->filter('meta[itemProp="answerCount"]')->attr('content');
+        return (int) $this->crawler->filter('meta[itemProp="answerCount"]')->attr('content');
     }
 
     /**
@@ -61,7 +61,7 @@ class Question extends AbstractExtractor
             ],
         ]);
 
-        $array = json_decode((string)$response->getBody(), true);
+        $array = json_decode((string) $response->getBody(), true);
 
         $title = $this->getTitle();
 
@@ -72,11 +72,12 @@ class Question extends AbstractExtractor
 
     /**
      * @param int $page
+     *
      * @return string
      */
     protected function getRequestUri($page)
     {
-        return 'https://www.zhihu.com/question/' . $this->id;
+        return 'https://www.zhihu.com/question/'.$this->id;
     }
 
     /**

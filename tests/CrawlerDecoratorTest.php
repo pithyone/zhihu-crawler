@@ -27,11 +27,13 @@ class CrawlerDecoratorTest extends TestCase
     {
         $this->crawler->expects($this->once())->method('each')->with($this->callback(function ($closure) {
             $node = $this->createCompatibleMock(Crawler::class);
-            return $closure($node, 0) === 'item';
+
+            return 'item' === $closure($node, 0);
         }))->willReturn(['item']);
 
         $this->assertEquals(['item'], (new CrawlerDecorator($this->crawler))->each(function ($node) {
             $this->assertInstanceOf(CrawlerDecorator::class, $node);
+
             return 'item';
         }));
     }

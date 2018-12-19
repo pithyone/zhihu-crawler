@@ -36,6 +36,7 @@ class AbstractExtractorTest extends TestCase
             $node = $this->createCompatibleMock(CrawlerDecorator::class);
             $node->expects($this->once())->method('filter')->willReturnSelf();
             $node->expects($this->once())->method('text');
+
             return $closure($node) instanceof AnswerInterface;
         }))->willReturn(['answer']);
 

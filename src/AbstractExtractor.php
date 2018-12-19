@@ -64,6 +64,7 @@ abstract class AbstractExtractor
 
     /**
      * @param Crawler $crawler
+     *
      * @return CrawlerDecorator
      */
     protected function createCrawler(Crawler $crawler)
@@ -73,6 +74,7 @@ abstract class AbstractExtractor
 
     /**
      * @param int $page
+     *
      * @return string
      */
     abstract protected function getRequestUri($page);
@@ -87,9 +89,6 @@ abstract class AbstractExtractor
      */
     abstract protected function getAnswerTitleSelector();
 
-    /**
-     * @return void
-     */
     private function setCrawler()
     {
         $crawler = $this->client->request('GET', $this->getRequestUri($this->page));
@@ -104,6 +103,7 @@ abstract class AbstractExtractor
     {
         return function (CrawlerDecorator $node) {
             $title = $node->filter($this->getAnswerTitleSelector())->text();
+
             return new Answer($node, $title);
         };
     }

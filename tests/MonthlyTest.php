@@ -17,6 +17,7 @@ class MonthlyTest extends TestCase
             $node = $this->createCompatibleMock(CrawlerDecorator::class);
             $node->expects($this->once())->method('filter')->with($this->equalTo('.question_link'))->willReturnSelf();
             $node->expects($this->once())->method('text');
+
             return $closure($node) instanceof AnswerInterface;
         }))->willReturn(['answer']);
 

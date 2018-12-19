@@ -39,6 +39,7 @@ class Collection extends AbstractExtractor
 
     /**
      * @param int $page
+     *
      * @return string
      */
     protected function getRequestUri($page)

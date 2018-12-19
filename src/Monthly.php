@@ -6,13 +6,14 @@ class Monthly extends AbstractExtractor
 {
     /**
      * @param int $page
+     *
      * @return string
      */
     protected function getRequestUri($page)
     {
-        $params = urlencode('{"offset":' . (($page - 1) * 5) . ',"type":"month"}');
+        $params = urlencode('{"offset":'.(($page - 1) * 5).',"type":"month"}');
 
-        return 'https://www.zhihu.com/node/ExploreAnswerListV2?params=' . $params;
+        return 'https://www.zhihu.com/node/ExploreAnswerListV2?params='.$params;
     }
 
     /**

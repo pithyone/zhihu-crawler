@@ -91,7 +91,8 @@ class AnswerTest extends TestCase
         $this->crawler->expects($this->once())->method('each')->with($this->callback(function ($closure) {
             $node = $this->createCompatibleMock(CrawlerDecorator::class);
             $node->expects($this->once())->method('attr')->with($this->equalTo('src'))->willReturn('url');
-            return $closure($node) === 'url';
+
+            return 'url' === $closure($node);
         }))->willReturn(['image']);
 
         $answer = new Answer($this->crawler, '');

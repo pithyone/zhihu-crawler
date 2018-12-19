@@ -21,6 +21,7 @@ class CrawlerDecorator
 
     /**
      * @param string $selector
+     *
      * @return self
      */
     public function filter($selector)
@@ -30,6 +31,7 @@ class CrawlerDecorator
 
     /**
      * @param \Closure $closure
+     *
      * @return array
      */
     public function each(\Closure $closure)
@@ -41,6 +43,7 @@ class CrawlerDecorator
 
     /**
      * @param string $attribute
+     *
      * @return string
      */
     public function attr($attribute)
@@ -75,6 +78,6 @@ class CrawlerDecorator
     {
         $component = parse_url($url);
 
-        return (isset($component['scheme']) ? '' : 'https://www.zhihu.com') . $url;
+        return (isset($component['scheme']) ? '' : 'https://www.zhihu.com').$url;
     }
 }
