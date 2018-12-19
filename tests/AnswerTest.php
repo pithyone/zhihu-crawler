@@ -3,7 +3,7 @@
 namespace ZhihuCrawler\Tests;
 
 use ZhihuCrawler\Answer;
-use ZhihuCrawler\ZhihuCrawler;
+use ZhihuCrawler\CrawlerDecorator;
 
 class AnswerTest extends TestCase
 {
@@ -15,7 +15,7 @@ class AnswerTest extends TestCase
     {
         parent::setUp();
 
-        $this->crawler = $this->createMockCopy(ZhihuCrawler::class);
+        $this->crawler = $this->createCompatibleMock(CrawlerDecorator::class);
     }
 
     public function testConstructAndGet()
@@ -88,7 +88,11 @@ class AnswerTest extends TestCase
     public function testGetImageList()
     {
         $this->crawler->expects($this->exactly(2))->method('filter')->withConsecutive([$this->equalTo('div[class^="zm-editable-content"]')], [$this->equalTo('noscript img')])->willReturnSelf();
-        $this->crawler->expects($this->once())->method('each')->willReturn(['image']);
+        $this->crawler->expects($this->once())->method('each')->with($this->callback(function ($closure) {
+            $node = $this->createCompatibleMock(CrawlerDecorator::class);
+            $node->expects($this->once())->method('attr')->with($this->equalTo('src'))->willReturn('url');
+            return $closure($node) === 'url';
+        }))->willReturn(['image']);
 
         $answer = new Answer($this->crawler, '');
 

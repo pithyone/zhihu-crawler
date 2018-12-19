@@ -55,6 +55,7 @@ abstract class AbstractExtractor
 
     /**
      * @return Client
+     * @codeCoverageIgnore
      */
     protected function createClient()
     {

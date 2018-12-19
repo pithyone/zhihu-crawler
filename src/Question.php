@@ -81,6 +81,7 @@ class Question extends AbstractExtractor
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     protected function getAnswerListSelector()
     {
@@ -89,6 +90,7 @@ class Question extends AbstractExtractor
 
     /**
      * @return string
+     * @codeCoverageIgnore
      */
     protected function getAnswerTitleSelector()
     {
